@@ -1,0 +1,108 @@
+// Conceptually
+Departments
+ └─ Department (Vertex)
+    ├─ id
+    ├─ name
+    └─ corridors (Adjacency list)
+      └─ Corridor (Edge)
+           ├─ target Department
+           └─ distance (weight)
+
+
+//    // Returns true if a vertex exists with the specified label
+//    public boolean hasVertex(int id) {
+//        for (Object o : DepartmentList) {
+//            DepartmentNode v = (DepartmentNode) o;
+//            if (v.getLabel().equals(label)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+//    // Returns the number of DepartmentList in the graph
+//    public int getVertexCount() {
+//        return DepartmentList.size; // LL not implemented
+//    }
+
+//    // Returns the number of undirected edges in the graph
+//    public int getEdgeCount() {
+//        int count = 0;
+//        for (Object o : DepartmentList) {
+//            DepartmentNode v = (DepartmentNode) o;
+//            count += v.getAdjList().size();
+//        }
+//        // Divide by 2 because each undirected edge is counted twice
+//        return count / 2;
+//    }
+
+    // Returns the vertex with the given label (or null if none exists)
+//    protected DepartmentNode getVertex(int id) {
+//        for (DepartmentNode v : DepartmentList) {
+//            if (v.getLabel().equals(label)) return v;
+//        }
+//        return null;
+//    }
+
+
+//    // Returns a list of adjacent DepartmentList for the given vertex label
+//    public DSALinkedList getAdjacent(int id) {
+//        DepartmentNode v = getVertex(label);
+//        if (v != null) {
+//            return v.getAdjList();
+//        }
+//        return null;
+//    }
+
+//    // Returns true if label2 is adjacent to label1
+//    public boolean isAdjacent(int id1, int id2) {
+//        DepartmentNode v1 = getVertex(label1);
+//        DepartmentNode v2 = getVertex(label2);
+//        if (v1 != null && v2 != null) {
+//            return v1.isAdjacent(v2);
+//        }
+//        return false;
+//    }
+
+//    // Display the adjacency list of the graph
+//    public void displayAsList() {
+//        for (Object o : DepartmentList) {
+//            DepartmentNode v = (DepartmentNode) o;
+//            System.out.print(v.getLabel() + ": ");
+//            DSALinkedList adj = v.getAdjList();
+//            for (Object n : adj) {
+//                DepartmentNode adjVertex = (DepartmentNode) n;
+//                System.out.print(adjVertex.getLabel() + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
+
+//    // Display the adjacency matrix of the graph
+//    public void displayAsMatrix() {
+//        int n = getVertexCount();
+//        Object[] labels = new Object[n];
+//        int i = 0;
+//        for (Object o : DepartmentList) {
+//            DepartmentNode v = (DepartmentNode) o;
+//            labels[i++] = v.getLabel();
+//        }
+//        // Print header
+//        System.out.print("   ");
+//        for (i = 0; i < n; i++) {
+//            System.out.print(labels[i] + " ");
+//        }
+//        System.out.println();
+//        // Print rows
+//        for (i = 0; i < n; i++) {
+//            System.out.print(labels[i] + ": ");
+//            for (int j = 0; j < n; j++) {
+//                if (isAdjacent(labels[i], labels[j])) {
+//                    System.out.print("1 ");
+//                } else {
+//                    System.out.print("0 ");
+//                }
+//            }
+//            System.out.println();
+//        }
+//    }
