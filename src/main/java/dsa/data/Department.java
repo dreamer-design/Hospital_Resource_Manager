@@ -1,5 +1,6 @@
 package dsa.data;
 
+import static dsa.model.DataModel.GRID_SIZE;
 import dsa.structs.LinkedList;
 import java.util.Random;
 
@@ -27,8 +28,25 @@ public class Department {
 
         this.loc = new int[2];
         Random rng = new Random();
-        loc[0] = rng.nextInt(30)*10+50;
-        loc[1] = rng.nextInt(30)*10+10;
+        loc[0] = rng.nextInt(10);
+        loc[1] = rng.nextInt(10);
+    }
+
+    /**
+     * NODE
+     * @param id
+     * @param name 
+     * @param x in graph units
+     * @param y (units)
+     */
+    public Department(int id, String name, int x, int y) {
+        this.id = id;
+        this.name = name;
+        corridors = new LinkedList<>();
+
+        this.loc = new int[2];
+        loc[0] = x;
+        loc[1] = y;
     }
 
     public int getId() {

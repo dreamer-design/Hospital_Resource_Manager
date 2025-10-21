@@ -9,10 +9,11 @@ public class DataModel {
     private static Heap schedule;
     private static int patientId;
     public static final Random RNG = new Random(); // single source RNG obj for ease
+    public static final int GRID_SIZE = 32;
 
     static {
         graphInstance = new Graph();
-        hashInstance = new Hash(20);
+        hashInstance = new Hash(40);
         init();
     }
 
@@ -29,19 +30,39 @@ public class DataModel {
     }
     
     public static void init() {
-        graphInstance.addDepartment(1, "Surgery");
-        graphInstance.addDepartment(2, "Ward");
-        graphInstance.addDepartment(3, "Waiting");
-        graphInstance.addDepartment(4, "Emergency");
-        graphInstance.addDepartment(5, "Administration");
-        graphInstance.addDepartment(6, "Smoko");
-        graphInstance.addCorridore(1, 2);
-        graphInstance.addCorridore(2, 3);
-        graphInstance.addCorridore(4, 2);
-        graphInstance.addCorridore(1, 3);
-        graphInstance.addCorridore(6, 1);
-        graphInstance.addCorridore(5, 2);
-        graphInstance.addCorridore(6, 2);
+    // Department nodes:
+    graphInstance.addDepartment(0, "Node1", 0, 0);
+    graphInstance.addDepartment(6, "Node2", 6, 0);
+    graphInstance.addDepartment(11, "Node6", 1, 1);
+    graphInstance.addDepartment(20, "Node4", 0, 2);
+    graphInstance.addDepartment(22, "Node5", 2, 2);
+    graphInstance.addDepartment(24, "Node8", 4, 2);
+    graphInstance.addDepartment(33, "Node7", 3, 3);
+    graphInstance.addDepartment(41, "Node13", 1, 4);
+    graphInstance.addDepartment(50, "Node14", 0, 5);
+    graphInstance.addDepartment(52, "Node12", 2, 5);
+    graphInstance.addDepartment(54, "Node10", 4, 5);
+    graphInstance.addDepartment(70, "Node15", 0, 7);
+    graphInstance.addDepartment(72, "Node11", 2, 7);
+    graphInstance.addDepartment(74, "Node9", 4, 7);
+    graphInstance.addDepartment(76, "Node3", 6, 7);
+
+    // Corridors (edges):
+    graphInstance.addCorridore(0, 6);
+    graphInstance.addCorridore(0, 11);
+    graphInstance.addCorridore(0, 20);
+    graphInstance.addCorridore(6, 24);
+    graphInstance.addCorridore(6, 76);
+    graphInstance.addCorridore(20, 22);
+    graphInstance.addCorridore(22, 33);
+    graphInstance.addCorridore(41, 50);
+    graphInstance.addCorridore(41, 52);
+    graphInstance.addCorridore(50, 70);
+    graphInstance.addCorridore(52, 54);
+    graphInstance.addCorridore(54, 72);
+    graphInstance.addCorridore(54, 74);
+    graphInstance.addCorridore(74, 76);
+        // crash if id does not exist
         
         // ids are incremented
         for(Integer i = 90; i < 120; i ++)

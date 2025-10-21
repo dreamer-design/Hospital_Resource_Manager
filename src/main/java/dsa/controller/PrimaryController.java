@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import dsa.model.*; // for DataModel instance reference
+import static dsa.model.DataModel.GRID_SIZE;
 import dsa.structs.*; // for Graph reference
 import java.util.Iterator;
 import java.util.Random;
@@ -30,7 +31,7 @@ public class PrimaryController {
     private GraphicsContext gc;
     private static final Graph graphData = DataModel.getGraphInstance();
     
-    final int circleSZ = 20; // node size
+    public static final int circleSZ = GRID_SIZE/2; // node size
     
     /**
      * Patient Record pane
@@ -84,39 +85,68 @@ public class PrimaryController {
         drawSomething();
     }
     
+    private void drawGrid() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.LIGHTGRAY);
+        gc.setLineWidth(1);
+        
+        int GRID = 8;
+
+        for (int i = 0; i <= GRID; i++) {
+            gc.strokeLine(i * GRID_SIZE, 0, i * GRID_SIZE, GRID_SIZE * GRID_SIZE);
+            gc.strokeLine(0, i * GRID_SIZE, GRID_SIZE * GRID_SIZE, i * GRID_SIZE);
+        }
+    }
+    
+    /**
+     * helper function to convert grid units to pixels
+     * @param gridUnits
+     * @return 
+     */
+    private int gridToPx(int gridUnits) {
+        return gridUnits * GRID_SIZE;
+    }
+
+    /**
+     * helper function to convert grid location to pixels
+     * @param gridLoc
+     * @return 
+     */
+    private int[] gridToPx(int[] gridLoc) {
+        return new int[] { gridToPx(gridLoc[0]), gridToPx(gridLoc[1]) };
+    }
+
     @FXML
     private void drawNode(int x, int y) {
-
         gc.setStroke(Color.BLUE);
         gc.setLineWidth(2);
         gc.strokeOval(x, y, circleSZ, circleSZ); // x,y , width, height
     }
     
     @FXML
-    private void drawEdge(int x1, int y1, int x2, int y2) {
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(3);
-        gc.strokeLine(x1 + 10, y1 + 10, x2 - 10, y2 - 10); // adjust for circle
-    }
-    
-    @FXML
     private void drawEdge(int[] loc1, int[] loc2) {
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(3);
-        gc.strokeLine(loc1[0] + circleSZ/2, loc1[1] + circleSZ/2, loc2[0] + circleSZ/2, loc2[1] + circleSZ/2); // adjust for circle
+        int[] p1 = gridToPx(loc1);
+        int[] p2 = gridToPx(loc2);
+        gc.strokeLine(p1[0] + circleSZ/2, p1[1] + circleSZ/2, p2[0] + circleSZ/2, p2[1] + circleSZ/2); // adjust for circle
     }
 
     private void drawSomething() {
         // Clear the canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawGrid();
         
         // nodes text
         gc.setFill(Color.BLACK);
         gc.fillText(graphData.toString(), 10, 400);
         
-//        draw circles for nodes
+//        draw circles for nodes and put id in corner of grid
         for(Department i : graphData.getDepartments() ) {
-            drawNode( i.getLoc()[0], i.getLoc()[1] ); // just draw the circle at the id for now
+            int[] px = gridToPx(i.getLoc());
+            drawNode( px[0], px[1] );
+            Integer id = i.getId();
+            gc.fillText(id.toString(), px[0] + GRID_SIZE - 15, px[1] + GRID_SIZE);
         }
         
         // draw links between nodes

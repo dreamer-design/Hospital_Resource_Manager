@@ -32,6 +32,17 @@ public class Graph {
     }
 
     /**
+     * Add NODE||VERTEX
+     * @param id
+     * @param name 
+     * @param x 
+     * @param y 
+     */
+    public void addDepartment(int id, String name, int x, int y) {
+        Departments.insertLast(new Department(id, name, x, y));
+    }
+
+    /**
      * Get NODE||VERTEX
      * @param id
      * @return department
