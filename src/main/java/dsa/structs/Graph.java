@@ -48,8 +48,8 @@ public class Graph {
 
     /**
      * Adds EDGE between NODE||VERTEX undirected
-     * @param label1
-     * @param label2 
+     * @param id1
+     * @param id1 
      */
     public void addCorridore(int id1, int id2) {
         Department v1 = getDepartment(id1);

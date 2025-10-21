@@ -13,6 +13,7 @@ public class Department {
     String name;
     int[] loc;
     LinkedList<Department> corridors; // edge list
+    Boolean visited; // for searches
 
     /**
      * NODE
@@ -54,18 +55,15 @@ public class Department {
         corridors.insertLast(vertex);
     }
 
-//        // MUTATOR setVisited
-//        public void setVisited() {
-//            visited = true;
-//        }
-//
-//        // MUTATOR clearVisited
-//        public void clearVisited() {
-//            visited = false;
-//        }
-//
-//        // ACCESSOR getVisited
-//        public boolean getVisited() {
-//            return visited;
-//        }
+    public void setVisited() {
+        this.visited = true;
+    }
+
+    public void clearVisited() {
+        this.visited = false;
+    }
+
+    public Boolean getVisited() {
+        return visited;
+    }
 }

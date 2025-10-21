@@ -13,6 +13,8 @@ public class Patient implements Comparable<Patient> {
     int age;
     Boolean status;
     Urgency urgency;
+    int destId; // which department they need to go to get treated
+    int eta;    // eta calculated by travel times
     
     public enum Urgency {
     EXTREME, HIGH, MEDIUM, LOW, WAIT
@@ -29,8 +31,29 @@ public class Patient implements Comparable<Patient> {
         this.status = true;
 //        this.urgency = Urgency.LOW;
         this.urgency = Urgency.values()[ DataModel.RNG.nextInt(5) ];
+        destId = -1;  // unassignd. department list might not be created yet
+        eta = -1;
 //        System.out.println("patient: " + this.id);
     }
+
+    /**
+     * set the destination to department id (if it exists)
+     * @param dest 
+     */
+    public void setDestId(int dest) {
+        if( DataModel.getGraphInstance().getDepartments() != null && DataModel.getGraphInstance().getDepartment(dest) != null)
+            this.destId = dest;
+    }
+
+    /**
+     * 
+     * @param eta 
+     */
+    public void setEta(int eta) {
+        this.eta = eta;
+    }
+    
+    
     
     public int getId() {
         return id;
