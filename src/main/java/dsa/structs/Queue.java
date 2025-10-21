@@ -1,10 +1,13 @@
 package dsa.structs;
 // FIFO, default shuffling queue
+
+import dsa.data.Department;
+
 public class Queue {
 
     protected int size;
     protected int count;
-    protected LinkedList<Object> queue;
+    protected LinkedList<Department> queue;
 
     //constructor
     public Queue() {
@@ -14,7 +17,7 @@ public class Queue {
     }
 
     // equiv. to enqueue, add to end
-    public void enqueue(Object obj) {
+    public void enqueue(Department obj) {
         
         
         if( count <= size ) {
@@ -28,8 +31,8 @@ public class Queue {
     }
 
     // equiv to dequeue, take from front
-    public Object dequeue() {
-        Object value;
+    public Department dequeue() {
+        Department value;
         
         if( count >= 0 ) { // if there are items
             value = queue.removeFirst(); // first value to be returned
@@ -41,7 +44,7 @@ public class Queue {
         return value;
     }
 
-    public Object peek() {
+    public Department peek() {
         return queue.peekFirst();
     }
 
