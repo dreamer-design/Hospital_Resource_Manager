@@ -1,13 +1,11 @@
 package dsa.data;
-
 import dsa.structs.LinkedList;
 import java.util.Random;
 
 /**
- *
- * This class represents a single patient record
+ * This class represents a single Department record
+ * location is a 10x10 grid
  */
-// DSAGraphNode class using a linked list for adjacency list
 public class Department {
     int id;
     String name;
@@ -15,7 +13,7 @@ public class Department {
     LinkedList<Department> corridors; // edge list
 
     /**
-     * NODE
+     * NODE with random locations
      * @param id
      * @param name 
      */
@@ -26,8 +24,25 @@ public class Department {
 
         this.loc = new int[2];
         Random rng = new Random();
-        loc[0] = rng.nextInt(30)*10+50;
-        loc[1] = rng.nextInt(30)*10+10;
+        // store location in GRID units (0-9)
+        loc[0] = rng.nextInt(10);
+        loc[1] = rng.nextInt(10);
+    }
+
+    /**
+     * NODE with locations
+     * @param id
+     * @param name 
+     * @param x 
+     * @param y 
+     */
+    public Department(int id, String name, int x, int y) {
+        this.id = id;
+        this.name = name;
+        corridors = new LinkedList<>();
+
+        // copy grid-unit location (do not convert to pixels here)
+        this.loc = new int[] { x, y };
     }
 
     public int getId() {

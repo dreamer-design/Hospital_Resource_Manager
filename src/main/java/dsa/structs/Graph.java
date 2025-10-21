@@ -27,8 +27,8 @@ public class Graph {
      * @param id
      * @param name 
      */
-    public void addDepartment(int id, String name) {
-        Departments.insertLast(new Department(id, name));
+    public void addDepartment(int id, String name, int x, int y) {
+        Departments.insertLast(new Department(id, name, x, y));
     }
 
     /**
@@ -74,12 +74,12 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph graph = new Graph();
-        graph.addDepartment(1, "Surgery");
-        graph.addDepartment(2, "Ward");
-        graph.addDepartment(3, "Waiting");
-        graph.addCorridore(1, 2);
-        graph.addCorridore(2, 3);
-        System.out.println(graph);
+//        Graph graph = new Graph();
+//        graph.addDepartment(1, "Surgery");
+//        graph.addDepartment(2, "Ward");
+//        graph.addDepartment(3, "Waiting");
+//        graph.addCorridore(1, 2);
+//        graph.addCorridore(2, 3);
+//        System.out.println(graph);
     }
 }
