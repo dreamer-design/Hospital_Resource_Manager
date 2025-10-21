@@ -72,14 +72,4 @@ public class Graph {
         }
         return sb.toString();
     }
-
-    public static void main(String[] args) {
-        Graph graph = new Graph();
-        graph.addDepartment(1, "Surgery");
-        graph.addDepartment(2, "Ward");
-        graph.addDepartment(3, "Waiting");
-        graph.addCorridore(1, 2);
-        graph.addCorridore(2, 3);
-        System.out.println(graph);
-    }
 }
