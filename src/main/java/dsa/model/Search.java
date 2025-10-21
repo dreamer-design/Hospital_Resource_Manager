@@ -34,19 +34,14 @@ public class Search {
         Queue T = new Queue();  // traversed
         Queue Q = new Queue(); // working memory    // (Q) frontier
         
-        // get adjacency list for current corridor
-        LinkedList<Department> current = src.getAdjList(); //
-        
         // 1. Clear visited flags for all vertices
 //        var verticesList = DataModel.getGraphInstance().getDepartments();  // im going to start using var for references
         var verticesList = g.getDepartments();  // im going to start using var for references
-        for (Department v : verticesList) {
-            v.setVisited();
-        }
+        for (Department v : verticesList) v.clearVisited();
         
         // 2. set startng vertice 
-        var start = src;
-        var v = start; // ref pseudo
+//        var start = src;
+        var v = src; // ref pseudo
         v.setVisited(); // set root as visited
         
         // enque v into Q
@@ -60,6 +55,7 @@ public class Search {
             // pseudo: for each vertex w in v's adjacency list that is 
             for( Department w : v.getAdjList() ) {
                 if( !w.getVisited() ) { // unvisited
+                    T.enqueue(v); // why??
                     T.enqueue(w); // add  to traversed
                     w.setVisited(); // set visited
                     Q.enqueue(w); // add to working memory
@@ -67,6 +63,7 @@ public class Search {
                 if( w == dest) return true;
             }
             levels.insertLast(Q); // should be a level
+            System.out.println(Q);
         }
         
         return false;
@@ -74,20 +71,52 @@ public class Search {
     
     public static void main(String[] args) {
         Graph t = new Graph();
-        t.addDepartment(1, "Surgery");
-        t.addDepartment(2, "Ward");
-        t.addDepartment(3, "Waiting");
-        t.addDepartment(4, "Emergency");
-        t.addDepartment(5, "Administration");
-        t.addDepartment(6, "Smoko");
-        t.addCorridore(1, 2);
-        t.addCorridore(2, 3);
-        t.addCorridore(4, 2);
-        t.addCorridore(1, 3);
-        t.addCorridore(6, 1);
-        t.addCorridore(5, 2);
-        t.addCorridore(6, 2);
+        // Department nodes:
+        t.addDepartment(0, "Node1", 0, 0);
+        t.addDepartment(6, "Node2", 6, 0);
+        t.addDepartment(11, "Node6", 1, 1);
+        t.addDepartment(20, "Node4", 0, 2);
+        t.addDepartment(22, "Node5", 2, 2);
+        t.addDepartment(24, "Node8", 4, 2);
+        t.addDepartment(33, "Node7", 3, 3);
+        t.addDepartment(41, "Node13", 1, 4);
+        t.addDepartment(50, "Node14", 0, 5);
+        t.addDepartment(52, "Node12", 2, 5);
+        t.addDepartment(54, "Node10", 4, 5);
+        t.addDepartment(70, "Node15", 0, 7);
+        t.addDepartment(72, "Node11", 2, 7);
+        t.addDepartment(74, "Node9", 4, 7);
+        t.addDepartment(76, "Node3", 6, 7);
+
+        // Corridors (edges):
+        t.addCorridore(0, 6);
+        t.addCorridore(0, 11);
+        t.addCorridore(0, 20);
+        t.addCorridore(6, 24);
+        t.addCorridore(6, 76);
+        t.addCorridore(20, 22);
+        t.addCorridore(22, 33);
+        t.addCorridore(41, 50);
+        t.addCorridore(41, 52);
+        t.addCorridore(50, 70);
+        t.addCorridore(52, 54);
+        t.addCorridore(54, 72);
+        t.addCorridore(54, 74);
+        t.addCorridore(74, 76);
+        // crash if id does not exist
         
-        Search.bfs(t, t.getDepartment(1), t.getDepartment(5));
+        if( Search.bfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
+            System.out.println("yes");
+        else
+            System.out.println("no");
+        
+//        System.out.println( Search.levels.toString() );
+        
+//        int i = 0;
+//        for( Queue d : Search.levels ) {
+//            System.out.println(i++);
+//            System.out.println( d );
+//        }
+        
     }
 }

@@ -14,7 +14,6 @@ import dsa.model.*; // for DataModel instance reference
 import static dsa.model.DataModel.GRID_SIZE;
 import dsa.structs.*; // for Graph reference
 import java.util.Iterator;
-import java.util.Random;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

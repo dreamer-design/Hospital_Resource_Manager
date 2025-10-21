@@ -84,4 +84,10 @@ public class Department {
     public Boolean getVisited() {
         return visited;
     }
+    
+    @Override
+    public String toString() {
+        Integer i  = id;
+        return i.toString();
+    }
 }
