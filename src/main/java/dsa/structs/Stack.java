@@ -2,34 +2,26 @@ package dsa.structs;
 
 //import java.util.Iterator;
 
-public class Stack<E> {
+import dsa.data.Department;
 
-    private int size;
+
+public class Stack<E> {
     private int top;
-    private LinkedList<Object> stack;
+    private LinkedList<Department> stack;
 
 
     //constructor
     public Stack() {
         stack = new LinkedList();
-        size = 0;
         top = 0;
     }
 
-    public void push(Object obj) {
-        
-        if( top <= size-1) {
-            stack.insertLast(obj);
-            top++;
-//            stack[top++] = obj;
-//            System.out.print("push: " + obj + " ");
-
-        }
-        else System.out.println("full: " + obj);
-        
+    public void push(Department obj) {
+        stack.insertLast(obj);
+        top++;        
     }
 
-    public Object pop() {
+    public Department pop() {
         if( top >= 0 ) {
 //            return stack[--top];
             top--;
@@ -40,11 +32,11 @@ public class Stack<E> {
     }
     
 //    @Override
-//    public Iterator<Object> iterator() {
+//    public Iterator<Department> iterator() {
 //        return new Iterator<>() {
 //            private int i = 0;
 //            public boolean hasNext() { return i <= top; }
-//            public Object next() { return stack[i++]; }
+//            public Department next() { return stack[i++]; }
 //        };
 //    }
 
@@ -60,9 +52,8 @@ public class Stack<E> {
 //        return postfixQueue;
 //    }
 
-    public Object peek() {
+    public Department peek() {
         return stack.peekLast();
-//        return stack[top-1];
     }
 
     public int getCount() {
@@ -71,8 +62,6 @@ public class Stack<E> {
 
     public Boolean isEmpty() {
         return stack.isEmpty();        
-//        if(top == 0) return true;
-//        else return false;
     }
 
     @Override
@@ -80,9 +69,6 @@ public class Stack<E> {
         if(stack == null) return "";
         String builder = new String();
         while(stack.peekFirst() != null ) builder += stack.peekLast() + ", ";
-//        String temp = new String();
-//        for(int i = 0; i < top; i++) temp += stack[i] + " ";
-//        return temp;
       return builder;
     }
 }

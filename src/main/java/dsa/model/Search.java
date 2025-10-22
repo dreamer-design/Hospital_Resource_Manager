@@ -4,6 +4,7 @@ import dsa.data.Department;
 import dsa.structs.Graph;
 import dsa.structs.LinkedList;
 import dsa.structs.Queue;
+import dsa.structs.Stack;
 
 /**
  *
@@ -22,6 +23,7 @@ public class Search {
         
         return 0;
     }
+    
     
         /**
      * Breadth-First Search (BFS): 
@@ -69,6 +71,43 @@ public class Search {
         return false;
     }
     
+    public static Boolean dfs(Graph g, Department src, Department dest) {
+        //Declare T = DSAQueue and S = DSAStack
+        Queue T = new Queue();
+        Stack S = new Stack();
+        
+        //Iterate through your vertices list and clear visited
+        var verticesList = g.getDepartments();  // im going to start using var for references
+        for (Department v : verticesList) v.clearVisited();
+        
+        //Reference a vertex from your vertices list as v
+        // 2. set startng vertice 
+        var v = src; // ref pseudo
+        v.setVisited(); // set root as visited  
+        
+        //Push v onto S
+        S.push(v);
+
+        //while S is not empty
+        while( !S.isEmpty() ) {
+            //while there is an unvisited vertex w in v's adjacency list
+            var a = v.getAdjList();
+            for(Department d: a) {
+                if( d == dest) return true; // found
+                if( !d.getVisited() ) {
+                    var w = d;
+                    T.enqueue(v);
+                    T.enqueue(w);
+                    w.setVisited();
+                    S.push(w);
+                    v = w; 
+                }
+            }
+        v = S.pop();
+        }
+        return false;
+    }
+    
     public static void main(String[] args) {
         Graph t = new Graph();
         // Department nodes:
@@ -106,9 +145,9 @@ public class Search {
         // crash if id does not exist
         
         if( Search.bfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
-            System.out.println("yes");
+            System.out.println("bfs, yes");
         else
-            System.out.println("no");
+            System.out.println("bfs, no");
         
 //        System.out.println( Search.levels.toString() );
         
@@ -117,6 +156,11 @@ public class Search {
 //            System.out.println(i++);
 //            System.out.println( d );
 //        }
+
+        if( Search.dfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
+            System.out.println("dfs, yes");
+        else
+            System.out.println("dfs, no");
         
     }
 }
