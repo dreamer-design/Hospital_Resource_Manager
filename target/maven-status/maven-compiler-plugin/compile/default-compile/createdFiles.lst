@@ -1,12 +1,12 @@
 dsa/structs/Hash.class
 dsa/rms/App.class
+dsa/data/Corridor.class
 dsa/data/Patient.class
 dsa/controller/RecordsController.class
 module-info.class
 dsa/structs/Heap.class
 dsa/data/Request.class
 dsa/structs/LinkedList.class
-dsa/data/Corridore.class
 dsa/data/Patient$Urgency.class
 dsa/structs/LinkedList$Node.class
 dsa/model/Search.class

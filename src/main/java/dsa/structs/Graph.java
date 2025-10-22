@@ -1,5 +1,6 @@
 package dsa.structs;
 
+import dsa.data.Corridor;
 import dsa.data.Department;
 
 /** a DSAGraph class using linked lists to store the list of nodes 
@@ -58,26 +59,25 @@ public class Graph {
 
 
     /**
-     * Adds EDGE between NODE||VERTEX undirected
+     * Adds EDGE between NODE||VERTEX undirected with specific length
      * @param id1
-     * @param id1 
+     * @param id2
+     * @param length
      */
-    public void addCorridore(int id1, int id2) {
+    public void addCorridor(int id1, int id2, float length) {
         Department v1 = getDepartment(id1);
         Department v2 = getDepartment(id2);
-        v1.addEdge(v2);
-        v2.addEdge(v1);
+        v1.addCorridor(length, v2);
+        v2.addCorridor(length, v1);
     }
-    
     // ACCESSOR toString
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Department v : Departments) {  // requires Iterator
             sb.append(v.getId()).append(": ").append( v.getName() ).append(": ");
-            for ( Object o : v.getAdjList() ) {
-                Department adjVertex = (Department) o;
-                sb.append(adjVertex.getId()).append(" ");
+            for ( Corridor corridor : v.getAdjList() ) {
+                sb.append(corridor.getTarget().getId()).append("(").append(corridor.getLength()).append(") ");
             }
             sb.append("\n");
         }

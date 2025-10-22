@@ -48,20 +48,20 @@ public class DataModel {
     graphInstance.addDepartment(76, "Node3", 6, 7);
 
     // Corridors (edges):
-    graphInstance.addCorridore(0, 6);
-    graphInstance.addCorridore(0, 11);
-    graphInstance.addCorridore(0, 20);
-    graphInstance.addCorridore(6, 24);
-    graphInstance.addCorridore(6, 76);
-    graphInstance.addCorridore(20, 22);
-    graphInstance.addCorridore(22, 33);
-    graphInstance.addCorridore(41, 50);
-    graphInstance.addCorridore(41, 52);
-    graphInstance.addCorridore(50, 70);
-    graphInstance.addCorridore(52, 54);
-    graphInstance.addCorridore(54, 72);
-    graphInstance.addCorridore(54, 74);
-    graphInstance.addCorridore(74, 76);
+    graphInstance.addCorridor(0, 6, 2);
+    graphInstance.addCorridor(0, 11, 2);
+    graphInstance.addCorridor(0, 20, 2);
+    graphInstance.addCorridor(6, 24, 2);
+    graphInstance.addCorridor(6, 76, 2);
+    graphInstance.addCorridor(20, 22, 2);
+    graphInstance.addCorridor(22, 33, 2);
+    graphInstance.addCorridor(41, 50, 2);
+    graphInstance.addCorridor(41, 52, 2);
+    graphInstance.addCorridor(50, 70, 2);
+    graphInstance.addCorridor(52, 54, 2);
+    graphInstance.addCorridor(54, 72, 2);
+    graphInstance.addCorridor(54, 74, 2);
+    graphInstance.addCorridor(74, 76, 2);
         // crash if id does not exist
         
         // ids are incremented

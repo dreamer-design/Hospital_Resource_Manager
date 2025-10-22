@@ -1,5 +1,6 @@
 package dsa.controller;
 
+import dsa.data.Corridor;
 import dsa.data.Department;
 import dsa.data.Patient;
 import dsa.rms.App;
@@ -150,8 +151,8 @@ public class PrimaryController {
         
         // draw links between nodes
         for(Department i : graphData.getDepartments() ) {
-            for(Department v : i.getAdjList()) {
-                drawEdge( i.getLoc(), v.getLoc() );
+            for(Corridor corridor : i.getAdjList()) {
+                drawEdge( i.getLoc(), corridor.getTarget().getLoc() );
             }
         }
     }

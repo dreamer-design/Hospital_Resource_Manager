@@ -13,7 +13,8 @@ public class Department {
     int id;
     String name;
     int[] loc;
-    LinkedList<Department> corridors; // edge list
+//    LinkedList<Department> corridors; // edge list
+    LinkedList<Corridor> corridors; // edge list
     Boolean visited; // for searches
 
     /**
@@ -57,7 +58,7 @@ public class Department {
         return name;
     }
 
-    public LinkedList<Department> getAdjList() {
+    public LinkedList<Corridor> getAdjList() {
         return corridors;
     }
 
@@ -65,12 +66,21 @@ public class Department {
         return loc;
     }
 
+//    /**
+//     * add a reference to the VERTEX to the EDGE LIST
+//     * @param vertex 
+//     */
+//    public void addEdge(Department vertex) {
+//        corridors.insertLast(vertex);
+//    }
+    
     /**
-     * add a reference to the VERTEX to the EDGE LIST
+     * add a corridor with specific length
+     * @param length
      * @param vertex 
      */
-    public void addEdge(Department vertex) {
-        corridors.insertLast(vertex);
+    public void addCorridor(float length, Department vertex) {
+        corridors.insertLast(new Corridor(length, vertex));
     }
 
     public void setVisited() {

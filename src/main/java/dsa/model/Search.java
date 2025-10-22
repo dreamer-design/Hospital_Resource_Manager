@@ -1,5 +1,6 @@
 package dsa.model;
 
+import dsa.data.Corridor;
 import dsa.data.Department;
 import dsa.structs.Graph;
 import dsa.structs.LinkedList;
@@ -55,7 +56,8 @@ public class Search {
             
             // then go through list an find unvisited
             // pseudo: for each vertex w in v's adjacency list that is 
-            for( Department w : v.getAdjList() ) {
+            for( Corridor corridor : v.getAdjList() ) {
+                Department w = corridor.getTarget();
                 if( !w.getVisited() ) { // unvisited
                     T.enqueue(v); // why??
                     T.enqueue(w); // add  to traversed
@@ -92,7 +94,8 @@ public class Search {
         while( !S.isEmpty() ) {
             //while there is an unvisited vertex w in v's adjacency list
             var a = v.getAdjList();
-            for(Department d: a) {
+            for(Corridor corridor: a) {
+                Department d = corridor.getTarget();
                 if( d == dest) return true; // found
                 if( !d.getVisited() ) {
                     var w = d;
@@ -128,20 +131,20 @@ public class Search {
         t.addDepartment(76, "Node3", 6, 7);
 
         // Corridors (edges):
-        t.addCorridore(0, 6);
-        t.addCorridore(0, 11);
-        t.addCorridore(0, 20);
-        t.addCorridore(6, 24);
-        t.addCorridore(6, 76);
-        t.addCorridore(20, 22);
-        t.addCorridore(22, 33);
-        t.addCorridore(41, 50);
-        t.addCorridore(41, 52);
-        t.addCorridore(50, 70);
-        t.addCorridore(52, 54);
-        t.addCorridore(54, 72);
-        t.addCorridore(54, 74);
-        t.addCorridore(74, 76);
+        t.addCorridor(0, 6, 1);
+        t.addCorridor(0, 11, 2);
+        t.addCorridor(0, 20, 3);
+        t.addCorridor(6, 24, 4);
+        t.addCorridor(6, 76, 5);
+        t.addCorridor(20, 22, 6);
+        t.addCorridor(22, 33, 7);
+        t.addCorridor(41, 50, 8);
+        t.addCorridor(41, 52, 9);
+        t.addCorridor(50, 70, 10);
+        t.addCorridor(52, 54, 11);
+        t.addCorridor(54, 72, 12);
+        t.addCorridor(54, 74, 13);
+        t.addCorridor(74, 76, 14);
         // crash if id does not exist
         
         if( Search.bfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
