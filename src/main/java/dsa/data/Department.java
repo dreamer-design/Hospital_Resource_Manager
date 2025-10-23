@@ -1,6 +1,5 @@
 package dsa.data;
 
-import static dsa.model.DataModel.GRID_SIZE;
 import dsa.structs.LinkedList;
 import java.util.Random;
 
@@ -9,7 +8,7 @@ import java.util.Random;
  * This class represents a single patient record
  */
 // DSAGraphNode class using a linked list for adjacency list
-public class Department {
+public class Department implements Comparable<Department> {
     int id;
     String name;
     int[] loc;
@@ -62,6 +61,22 @@ public class Department {
         return corridors;
     }
 
+    public LinkedList<Department> getDepAdjList() {
+        LinkedList<Department> adjList = new LinkedList();
+        for( Corridor edge: corridors)
+            adjList.insertLast(edge.target);
+        return adjList;
+    }
+
+    public Float getAdjCorridorLength(Department b) {
+        // go through the corridors from a
+        for( Corridor c : corridors ) {
+            if( c.getTarget() == b )
+                return c.getLength();
+        }
+        return null;
+    }
+
     public int[] getLoc() {
         return loc;
     }
@@ -99,5 +114,19 @@ public class Department {
     public String toString() {
         Integer i  = id;
         return i.toString();
+    }
+    
+    /**
+     * Compare departments by ID for priority ordering
+     * Lower ID = higher priority
+     * @param other the department to compare to
+     * @return negative if this has higher priority, positive if lower priority, 0 if equal
+     */
+    @Override
+    public int compareTo(Department other) {
+        if (other == null) throw new NullPointerException("Cannot compare with null department");
+        
+        // Compare by ID - lower ID has higher priority
+        return Integer.compare(this.id, other.id);
     }
 }

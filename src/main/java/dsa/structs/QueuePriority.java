@@ -1,41 +1,65 @@
 package dsa.structs;
-// FIFO, default shuffling queue
 
-import dsa.data.Department;
+// Generic Priority Queue implementation
+public class QueuePriority<T extends Comparable<T>> {
 
-public class QueuePriority {
-
-    protected int size;
     protected int count;
-    protected LinkedList<Department> queue;
+    protected LinkedList<T> queue;
 
     //constructor
     public QueuePriority() {
-        queue = new LinkedList();
-        count = 0; // top
+        queue = new LinkedList<>();
+        count = 0;
     }
 
-    // equiv. to enqueue, add to end
-    public void enqueue(Department obj) {
-        queue.insertLast(obj);
+    //constructor
+    public QueuePriority(T d) {
+        queue = new LinkedList();
+        queue.insertFirst(d);
+        count = 1;
+    }
+
+    // Priority enqueue - insert based on natural ordering (highest priority first)
+    public void enqueue(T item) {
+        if (queue.isEmpty()) {
+            queue.insertFirst(item);
+        } else {
+            // Find the correct position based on priority
+            LinkedList.Node<T> current = queue.getHeadNode();
+            LinkedList.Node<T> previous = null;
+            
+            // Traverse to find the correct insertion point
+            while (current != null && item.compareTo(current.data) > 0) {
+                previous = current;
+                current = queue.getNext(current);
+            }
+            
+            if (previous == null) {
+                // Insert at head (highest priority)
+                queue.insertFirst(item);
+            } else {
+                // Insert after previous node
+                queue.insertBefore(current != null ? current.data : queue.peekLast(), item);
+            }
+        }
         count++;
     }
 
-    // equiv to dequeue, take from front
-    public Department dequeue() {
-        Department value;
+    // Dequeue - remove highest priority item (first in queue)
+    public T dequeue() {
+        T value;
         
-        if( count >= 0 ) { // if there are items
-            value = queue.removeFirst(); // first value to be returned
+        if (count > 0) {
+            value = queue.removeFirst();
             count--;
-        }
-        else
+        } else {
             value = null;
+        }
         
         return value;
     }
 
-    public Department peek() {
+    public T peek() {
         return queue.peekFirst();
     }
 
@@ -54,10 +78,10 @@ public class QueuePriority {
         if(queue == null) return "";
         String builder = new String();
         Integer i = 0;
-        for( Department d : queue) {
+        for( T item : queue) {
             builder += i++;
             builder += ": ";
-            builder += d;
+            builder += item;
             builder += ", ";
         }
         builder += ";\n";
