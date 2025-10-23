@@ -10,6 +10,7 @@ dsa/structs/LinkedList.class
 dsa/data/Patient$Urgency.class
 dsa/structs/LinkedList$Node.class
 dsa/model/Search.class
+dsa/structs/QueuePriority.class
 dsa/structs/Graph.class
 dsa/controller/ScheduleController.class
 dsa/model/Sorts.class

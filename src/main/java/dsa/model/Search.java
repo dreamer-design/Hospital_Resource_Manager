@@ -3,8 +3,10 @@ package dsa.model;
 import dsa.data.Corridor;
 import dsa.data.Department;
 import dsa.structs.Graph;
+import dsa.structs.Heap;
 import dsa.structs.LinkedList;
 import dsa.structs.Queue;
+import dsa.structs.QueuePriority;
 import dsa.structs.Stack;
 
 /**
@@ -17,10 +19,51 @@ public class Search {
     
         /**
      * A* shortest path src, dest
+     * g(n) cost to reach the node
+     * h(n) heuristic estimate
+     * f(n) total estimated cost
+     * use a heap to store/retrieve nodes based o their f(n) values
      * @param src
      * @param dest
      */
-    public static int ShortestPath(Department src, Department dest) {
+//    public static int ShortestPath(Department src, Department dest) {
+    public static Integer a_star(Graph g, Department start, Department dest, int heuristic) {
+        // maybe check a path exists first
+        if( bfs(g, start, dest) == false ) return null;
+        
+        QueuePriority priorityQueue = new QueuePriority( ); // its big enough to fit the whole graph
+        float gn = 0;
+        float fn = gn + heuristic;
+        
+        // expand noes by 
+        
+        
+        /*
+       
+            open_set = [(0 + heuristic[start], 0, start, [])]  # (f, g, node, path)
+    visited = set()
+
+    while open_set:
+        f, g, current, path = heapq.heappop(open_set)
+
+        if current in visited:
+            continue
+        visited.add(current)
+
+        path = path + [current]
+
+        if current == goal:
+            return path, g  # Return the path and total cost
+
+        for neighbor, cost in graph.get(current, []):
+            if neighbor not in visited:
+                new_g = g + cost
+                new_f = new_g + heuristic[neighbor]
+                heapq.heappush(open_set, (new_f, new_g, neighbor, path))
+
+    return None, float('inf')
+
+        */
         
         return 0;
     }

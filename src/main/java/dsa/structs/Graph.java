@@ -2,6 +2,7 @@ package dsa.structs;
 
 import dsa.data.Corridor;
 import dsa.data.Department;
+import java.util.Iterator;
 
 /** a DSAGraph class using linked lists to store the list of nodes 
  * Implement a Graph class using an adjacency list.
@@ -9,18 +10,18 @@ import dsa.data.Department;
  * 
  */
 public class Graph {
-    LinkedList<Department> Departments; // departments (nodes)
+    LinkedList<Department> departments; // departments (nodes)
 
     public Graph() {
-        Departments = new LinkedList<>();
+        departments = new LinkedList<>();
     }
 
     /**
-     * get the Departments List
+     * get the departments List
      * @return Department Linked List Reference
      */
     public LinkedList<Department> getDepartments() {
-        return Departments;
+        return departments;
     }
 
     /**
@@ -29,7 +30,7 @@ public class Graph {
      * @param name 
      */
     public void addDepartment(int id, String name) {
-        Departments.insertLast(new Department(id, name));
+        departments.insertLast(new Department(id, name));
     }
 
     /**
@@ -40,7 +41,7 @@ public class Graph {
      * @param y 
      */
     public void addDepartment(int id, String name, int x, int y) {
-        Departments.insertLast(new Department(id, name, x, y));
+        departments.insertLast(new Department(id, name, x, y));
     }
 
     /**
@@ -49,7 +50,7 @@ public class Graph {
      * @return department
      */
     public Department getDepartment(int id) {
-        for (var dep : Departments) {
+        for (var dep : departments) {
             if (dep.getId() == id) {
                 return dep;
             }
@@ -70,11 +71,23 @@ public class Graph {
         v1.addCorridor(length, v2);
         v2.addCorridor(length, v1);
     }
+    
+    public int getSize() {
+        int i = 1; // new(1) = [0]
+        Iterator<Department> it = departments.iterator();
+
+        while (it.hasNext()) {
+            it.next();   // move to next node
+            i++;
+        }
+        return i;
+    }
+    
     // ACCESSOR toString
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Department v : Departments) {  // requires Iterator
+        for (Department v : departments) {  // requires Iterator
             sb.append(v.getId()).append(": ").append( v.getName() ).append(": ");
             for ( Corridor corridor : v.getAdjList() ) {
                 sb.append(corridor.getTarget().getId()).append("(").append(corridor.getLength()).append(") ");
