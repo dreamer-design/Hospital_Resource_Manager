@@ -28,52 +28,68 @@ public class Search {
      */
 //    public static int ShortestPath(Department src, Department dest) {
     public static Float a_star(Graph g, Department start, Department dest) {
-        // maybe check a path exists first
-        if( bfs(g, start, dest) == false ) return null;
+        if( bfs(g, start, dest) == false ) return null; // ??maybe check a path exists first??
         
+        // main vars
         QueuePriority<Department> openSet = new QueuePriority( );
-
-        float gn = 0; // cot to nest node
-        float fn = 0; // total cost
-//        float fn = gn + hu(start, dest); // f(n) total estimated cost start-finish
-//        hn = hu(d, dest); // disance to target
-                
+        float gn = 0; // cost to next node
+        float fn = 0; // total cost, fn = gn + hu(start, dest)
+        //        hn = hu(d, dest);
+        
+        // helper vars
+        Department prev = null;
+        Department current = null;
+        Department bestD = null;
+        float cost;
+        float bestV = Float.POSITIVE_INFINITY;
+        
         // start at the root node
         openSet.enqueue(start);
-
+            
         // goto the best next node until you reach the target or dead end
         while( !openSet.isEmpty() && openSet.peek() != null) {
             System.out.println("*");
-            // helper vars
-            Department prev = openSet.dequeue();
-            Department bestD = null;
-            float bestV = 9999999;
-
-            // expand current node and get the best path
-            for( Department d : prev.getDepAdjList() ) {
-                if( d == dest ); // ??this is the end??
+            prev = current;
+            current = openSet.dequeue(); // else goto next node with best heuristic
+            // expand current node and get the best path(s)
+            // since using a (priority queue) and it checks neighbours. 
+            // extra items in the queue are expected
+            for( Department d :  current.getDepAdjList()) {
                 // get cost of adjacent node: f(n) = g(n) + h(n)
-                float cost = gn + prev.getAdjCorridorLength(d) + hu(d, dest);
-                
+                cost = gn + current.getAdjCorridorLength(d) + hu(d, dest);
+                System.out.printf("gn: %f, hu: %f, cost: %f\n",cost, gn, hu(d, dest));
+                System.out.printf("dep: %s, %f\n", d, cost);
+
                 if( cost < bestV) {
                     bestV = cost;
                     bestD = d;
-                    
-                    // ??placement of this so that it returns when found??
-                    if( hu(bestD, dest) == 0 ) return fn;  // found return
-
+                    System.out.println("best: " + bestV + " " + bestD);
+                    openSet.enqueue(bestD);
+//                        fn += bestV;  // ??this should be moved to near the exit condition??
                 }
             }
             
-            // is not dead end add to fn
-            if( bestV != 9999999 && bestD != null ) {
-                openSet.enqueue(bestD);
-                fn += bestV;  // ??this should be moved to near the exit condition??
-            }
-        }
+//            fn += current.getAdjCorridorLength(bestD);
+            
+            // heuristic == 0 means found
+            if( bestD != null && hu(bestD, dest) == 0 ) {
 
+                return fn;
+            }  // found return f(n)
+        }
+        
         return null;
     }
+    
+//    private LinkedList<Integer> getPath(? cameFrom, int current) {
+//        LinkedList<Integer> path = new LinkedList<>();
+//        path.insertLast(current);
+//        while (cameFrom.containsKey(current)) {
+//            current = cameFrom.get(current);
+//            path.insertLast(0, current);
+//        }
+//        return path;
+//    }
 
     /**
      * the heuristic is just the hypotenuse to the dest 
@@ -232,10 +248,9 @@ public class Search {
         else
             System.out.println("dfs, no");
         
-        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(6));
+//        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(6));
+        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(76));
         System.out.println(r);
-        
-        
         
     }
 }
