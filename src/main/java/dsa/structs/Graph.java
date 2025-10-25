@@ -2,6 +2,7 @@ package dsa.structs;
 
 import dsa.data.Corridor;
 import dsa.data.Department;
+import dsa.model.Search;
 import java.util.Iterator;
 
 /** a DSAGraph class using linked lists to store the list of nodes 
@@ -68,6 +69,17 @@ public class Graph {
     public void addCorridor(int id1, int id2, float length) {
         Department v1 = getDepartment(id1);
         Department v2 = getDepartment(id2);
+        v1.addCorridor(length, v2);
+        v2.addCorridor(length, v1);
+    }
+    
+    /**
+     * add a corridor (calculate length)
+     */
+    public void addCorridor(int id1, int id2) {
+        Department v1 = getDepartment(id1);
+        Department v2 = getDepartment(id2);
+        float length = Search.hu(v1, v2);
         v1.addCorridor(length, v2);
         v2.addCorridor(length, v1);
     }

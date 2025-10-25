@@ -14,7 +14,12 @@ public class Department implements Comparable<Department> {
     int[] loc;
 //    LinkedList<Department> corridors; // edge list
     LinkedList<Corridor> corridors; // edge list
-    Boolean visited; // for searches
+    
+    // search book keeping
+    Boolean visited;    // closedSet
+    float g;            // cost so far
+    float f;            // total cost ( g + h )
+    Department cameFrom;
 
     /**
      * NODE
@@ -30,6 +35,12 @@ public class Department implements Comparable<Department> {
         Random rng = new Random();
         loc[0] = rng.nextInt(10);
         loc[1] = rng.nextInt(10);
+        
+        // search book keeping
+        visited = false;    // closedSet
+        g = 0;            // cost so far
+        f = 0;            // total cost ( g + h )
+        cameFrom = null;
     }
 
     /**
@@ -80,14 +91,6 @@ public class Department implements Comparable<Department> {
     public int[] getLoc() {
         return loc;
     }
-
-//    /**
-//     * add a reference to the VERTEX to the EDGE LIST
-//     * @param vertex 
-//     */
-//    public void addEdge(Department vertex) {
-//        corridors.insertLast(vertex);
-//    }
     
     /**
      * add a corridor with specific length
@@ -102,12 +105,40 @@ public class Department implements Comparable<Department> {
         this.visited = true;
     }
 
+    public void setVisited(Boolean flag) {
+        this.visited = flag;
+    }
+
     public void clearVisited() {
         this.visited = false;
     }
 
     public Boolean getVisited() {
         return visited;
+    }
+
+    public float getG() {
+        return g;
+    }
+
+    public void setG(float g) {
+        this.g = g;
+    }
+
+    public float getF() {
+        return f;
+    }
+
+    public void setF(float f) {
+        this.f = f;
+    }
+
+    public Department getCameFrom() {
+        return cameFrom;
+    }
+
+    public void setCameFrom(Department cameFrom) {
+        this.cameFrom = cameFrom;
     }
     
     @Override
@@ -124,9 +155,6 @@ public class Department implements Comparable<Department> {
      */
     @Override
     public int compareTo(Department other) {
-        if (other == null) throw new NullPointerException("Cannot compare with null department");
-        
-        // Compare by ID - lower ID has higher priority
-        return Integer.compare(this.id, other.id);
+        return Float.compare(this.f, other.f);  // lower f = higher priority
     }
 }
