@@ -51,7 +51,10 @@ public class Search {
             System.out.println("*");
             
             Department current = openSet.dequeue();
-            if (current == dest) return current.getG(); // found return distance travelled
+            if (current == dest) {
+                System.out.println( reconPath(dest) ); // reconstruct path output
+                return current.getG();
+            } // found return distance travelled
             current.setVisited(true);
             
             // expand current node and get the best path(s)
@@ -72,19 +75,20 @@ public class Search {
             
         System.out.printf("G: %.0f\n", current.getG() ); // tally
         }
-        
         return null; // not found
     }
-    
-//    private LinkedList<Integer> getPath(? cameFrom, int current) {
-//        LinkedList<Integer> path = new LinkedList<>();
-//        path.insertLast(current);
-//        while (cameFrom.containsKey(current)) {
-//            current = cameFrom.get(current);
-//            path.insertLast(0, current);
-//        }
-//        return path;
-//    }
+
+    private static LinkedList<Department> reconPath(Department dest) {
+        // path recon
+        LinkedList<Department> path = new LinkedList<>();
+        Department current = dest;
+
+        while (current != null) {
+            path.insertFirst(current);
+            current = current.getCameFrom();
+        }
+        return path;
+    }
 
     /**
      * the heuristic is just the hypotenuse to the dest 
