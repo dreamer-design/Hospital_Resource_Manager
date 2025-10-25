@@ -3,7 +3,6 @@ package dsa.model;
 import dsa.data.Corridor;
 import dsa.data.Department;
 import dsa.structs.Graph;
-import dsa.structs.Heap;
 import dsa.structs.LinkedList;
 import dsa.structs.Queue;
 import dsa.structs.QueuePriority;
@@ -18,56 +17,93 @@ public class Search {
 
     
         /**
-     * A* shortest path src, dest
+     * A* shortest path src, dest, without mapping version)
      * g(n) cost to reach the node
      * h(n) heuristic estimate
      * f(n) total estimated cost
      * use a heap to store/retrieve nodes based o their f(n) values
      * @param src
      * @param dest
+     * @return shortest path value
      */
 //    public static int ShortestPath(Department src, Department dest) {
-    public static Integer a_star(Graph g, Department start, Department dest, int heuristic) {
-        // maybe check a path exists first
-        if( bfs(g, start, dest) == false ) return null;
+    public static Float a_star(Graph g, Department start, Department dest) {
+        if( bfs(g, start, dest) == false ) return null; // optional
         
-        QueuePriority priorityQueue = new QueuePriority( ); // its big enough to fit the whole graph
-        float gn = 0;
-        float fn = gn + heuristic;
+        // initialize all nodes
+        for (Department d : g.getDepartments()) {
+            d.setVisited(false);
+            d.setCameFrom(null);
+            d.setG(Float.POSITIVE_INFINITY);
+            d.setF(Float.POSITIVE_INFINITY);
+        }
         
-        // expand noes by 
+        // main vars
+        QueuePriority<Department> openSet = new QueuePriority( );
+        start.setG(0);
+        start.setF( hu(start, dest) ); // heuristic only
         
-        
-        /*
-       
-            open_set = [(0 + heuristic[start], 0, start, [])]  # (f, g, node, path)
-    visited = set()
+        // start at the root node
+        openSet.enqueue(start);
+            
+        // goto the best next node until you reach the target
+        while( !openSet.isEmpty() && openSet.peek() != null) {
+            System.out.println("*");
+            
+            Department current = openSet.dequeue();
+            if (current == dest) {
+                System.out.println( reconPath(dest) ); // reconstruct path output
+                return current.getG();
+            } // found return distance travelled
+            current.setVisited(true);
+            
+            // expand current node and get the best path(s)
+            // since using a (priority queue) and it checks neighbours. 
+            for( Department neighbor :  current.getDepAdjList()) {
+                if ( neighbor.getVisited() ) continue;
 
-    while open_set:
-        f, g, current, path = heapq.heappop(open_set)
-
-        if current in visited:
-            continue
-        visited.add(current)
-
-        path = path + [current]
-
-        if current == goal:
-            return path, g  # Return the path and total cost
-
-        for neighbor, cost in graph.get(current, []):
-            if neighbor not in visited:
-                new_g = g + cost
-                new_f = new_g + heuristic[neighbor]
-                heapq.heappush(open_set, (new_f, new_g, neighbor, path))
-
-    return None, float('inf')
-
-        */
-        
-        return 0;
+                float tentativeG = current.getG() + current.getAdjCorridorLength(neighbor); // start -> current -> neighbor
+                
+                System.out.printf("dep: %s, l: %.0f, cg: %.0f, tG: %.0f\n", neighbor.getId(), current.getAdjCorridorLength(neighbor), current.getG(), tentativeG);
+                if (tentativeG < neighbor.getG()) {                 // path to neighbor is cheaper than any path before
+                    neighbor.setCameFrom(current);                  // for path recon
+                    neighbor.setG(tentativeG);                      // UPDATE: best known: travelled + this nodes length
+                    neighbor.setF(tentativeG + hu(neighbor, dest)); // used by compareTo. total cost this node to end
+                    openSet.enqueue(neighbor);
+                }
+            }
+            
+        System.out.printf("G: %.0f\n", current.getG() ); // tally
+        }
+        return null; // not found
     }
-    
+
+    private static LinkedList<Department> reconPath(Department dest) {
+        // path recon
+        LinkedList<Department> path = new LinkedList<>();
+        Department current = dest;
+
+        while (current != null) {
+            path.insertFirst(current);
+            current = current.getCameFrom();
+        }
+        return path;
+    }
+
+    /**
+     * the heuristic is just the hypotenuse to the dest 
+     * as the crow flies
+     * euclidean
+     * bee line
+     * @param a
+     * @param b
+     * @return float bird
+     */
+    public static float hu(Department a, Department b) {
+        int[] p1 = a.getLoc();
+        int[] p2 = b.getLoc();
+        return (float) Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2));
+    }
     
         /**
      * Breadth-First Search (BFS): 
@@ -110,7 +146,7 @@ public class Search {
                 if( w == dest) return true;
             }
             levels.insertLast(Q); // should be a level
-            System.out.println(Q);
+            System.out.print(Q);
         }
         
         return false;
@@ -174,26 +210,27 @@ public class Search {
         t.addDepartment(76, "Node3", 6, 7);
 
         // Corridors (edges):
-        t.addCorridor(0, 6, 1);
-        t.addCorridor(0, 11, 2);
-        t.addCorridor(0, 20, 3);
-        t.addCorridor(6, 24, 4);
-        t.addCorridor(6, 76, 5);
-        t.addCorridor(20, 22, 6);
-        t.addCorridor(22, 33, 7);
-        t.addCorridor(41, 50, 8);
-        t.addCorridor(41, 52, 9);
-        t.addCorridor(50, 70, 10);
-        t.addCorridor(52, 54, 11);
-        t.addCorridor(54, 72, 12);
-        t.addCorridor(54, 74, 13);
-        t.addCorridor(74, 76, 14);
+        t.addCorridor(0, 6);
+        t.addCorridor(0, 11);
+        t.addCorridor(0, 20);
+        t.addCorridor(6, 24);
+        t.addCorridor(6, 76);
+        t.addCorridor(20, 22);
+        t.addCorridor(22, 33);
+        t.addCorridor(33, 41); // link
+        t.addCorridor(41, 50);
+        t.addCorridor(41, 52);
+        t.addCorridor(50, 70);
+        t.addCorridor(52, 54);
+        t.addCorridor(54, 72);
+        t.addCorridor(54, 74);
+        t.addCorridor(74, 76);
         // crash if id does not exist
         
-        if( Search.bfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
-            System.out.println("bfs, yes");
-        else
-            System.out.println("bfs, no");
+//        if( Search.bfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
+//            System.out.println("bfs, yes");
+//        else
+//            System.out.println("bfs, no");
         
 //        System.out.println( Search.levels.toString() );
         
@@ -207,6 +244,10 @@ public class Search {
             System.out.println("dfs, yes");
         else
             System.out.println("dfs, no");
+        
+//        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(6));
+        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(50));
+        System.out.println(r);
         
     }
 }

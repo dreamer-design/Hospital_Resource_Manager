@@ -1,6 +1,5 @@
 package dsa.data;
 
-import static dsa.model.DataModel.GRID_SIZE;
 import dsa.structs.LinkedList;
 import java.util.Random;
 
@@ -9,13 +8,18 @@ import java.util.Random;
  * This class represents a single patient record
  */
 // DSAGraphNode class using a linked list for adjacency list
-public class Department {
+public class Department implements Comparable<Department> {
     int id;
     String name;
     int[] loc;
 //    LinkedList<Department> corridors; // edge list
     LinkedList<Corridor> corridors; // edge list
-    Boolean visited; // for searches
+    
+    // search book keeping
+    Boolean visited;    // closedSet
+    float g;            // cost so far
+    float f;            // total cost ( g + h )
+    Department cameFrom;
 
     /**
      * NODE
@@ -31,6 +35,12 @@ public class Department {
         Random rng = new Random();
         loc[0] = rng.nextInt(10);
         loc[1] = rng.nextInt(10);
+        
+        // search book keeping
+        visited = false;    // closedSet
+        g = 0;            // cost so far
+        f = 0;            // total cost ( g + h )
+        cameFrom = null;
     }
 
     /**
@@ -62,17 +72,25 @@ public class Department {
         return corridors;
     }
 
+    public LinkedList<Department> getDepAdjList() {
+        LinkedList<Department> adjList = new LinkedList();
+        for( Corridor edge: corridors)
+            adjList.insertLast(edge.target);
+        return adjList;
+    }
+
+    public Float getAdjCorridorLength(Department b) {
+        // go through the corridors from a
+        for( Corridor c : corridors ) {
+            if( c.getTarget() == b )
+                return c.getLength();
+        }
+        return null;
+    }
+
     public int[] getLoc() {
         return loc;
     }
-
-//    /**
-//     * add a reference to the VERTEX to the EDGE LIST
-//     * @param vertex 
-//     */
-//    public void addEdge(Department vertex) {
-//        corridors.insertLast(vertex);
-//    }
     
     /**
      * add a corridor with specific length
@@ -87,6 +105,10 @@ public class Department {
         this.visited = true;
     }
 
+    public void setVisited(Boolean flag) {
+        this.visited = flag;
+    }
+
     public void clearVisited() {
         this.visited = false;
     }
@@ -94,10 +116,45 @@ public class Department {
     public Boolean getVisited() {
         return visited;
     }
+
+    public float getG() {
+        return g;
+    }
+
+    public void setG(float g) {
+        this.g = g;
+    }
+
+    public float getF() {
+        return f;
+    }
+
+    public void setF(float f) {
+        this.f = f;
+    }
+
+    public Department getCameFrom() {
+        return cameFrom;
+    }
+
+    public void setCameFrom(Department cameFrom) {
+        this.cameFrom = cameFrom;
+    }
     
     @Override
     public String toString() {
         Integer i  = id;
         return i.toString();
+    }
+    
+    /**
+     * Compare departments by ID for priority ordering
+     * Lower ID = higher priority
+     * @param other the department to compare to
+     * @return negative if this has higher priority, positive if lower priority, 0 if equal
+     */
+    @Override
+    public int compareTo(Department other) {
+        return Float.compare(this.f, other.f);  // lower f = higher priority
     }
 }

@@ -5,7 +5,7 @@ package dsa.data;
  * @param length
  * @param target
  */
-public class Corridor {
+public class Corridor implements Comparable<Corridor> {
     float length;
     Department target;
 
@@ -30,6 +30,22 @@ public class Corridor {
         this.target = target;
     }
     
+    /**
+     * Compare corridors by length for priority ordering
+     * Shorter length = higher priority (shorter paths first)
+     * @param other the corridor to compare to
+     * @return negative if this has higher priority, positive if lower priority, 0 if equal
+     */
+    @Override
+    public int compareTo(Corridor other) {
+        if (other == null) throw new NullPointerException("Cannot compare with null corridor");
+        
+        // Compare by length - shorter length has higher priority
+        return Float.compare(this.length, other.length);
+    }
     
-    
+    @Override
+    public String toString() {
+        return "Corridor{length=" + length + ", target=" + target.getId() + "}";
+    }
 }
