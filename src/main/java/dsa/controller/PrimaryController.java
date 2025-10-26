@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -30,6 +31,8 @@ public class PrimaryController {
     
     private GraphicsContext gc;
     private static final Graph graphData = DataModel.getGraphInstance();
+    private int I;
+    private Patient REC;
     
     public static final int circleSZ = GRID_SIZE/2; // node size
     
@@ -45,6 +48,10 @@ public class PrimaryController {
     private TextField txtPatientAge;
     @FXML
     private TextField txtPatientStatus;
+    @FXML
+    private TextField txtPatientDuration;
+    @FXML
+    private TextArea txtPatientOutput;
 
     
     /**
@@ -60,12 +67,9 @@ public class PrimaryController {
     
     @FXML
     private void initialize() {
-        int i = DataModel.getPatientId();
-        Patient rec = DataModel.getHashInstance().get( i );
-        txtPatientId.setText( String.valueOf( rec.getId() ) );
-        txtPatientName.setText( String.valueOf( rec.getName() ) );
-        txtPatientAge.setText( String.valueOf( rec.getAge() ) );
-        txtPatientStatus.setText( String.valueOf( rec.getStatus() ) );
+        I = DataModel.getPatientId();
+        REC = DataModel.getHashInstance().get( I );
+        populateFields();
         
         Graph graph = DataModel.getGraphInstance();
 
@@ -83,6 +87,31 @@ public class PrimaryController {
         // get Canvas and draw the graph
         gc = canvas.getGraphicsContext2D();
         drawSomething();
+    }
+    
+    private void populateFields() {
+        txtPatientId.setText( String.valueOf( REC.getId() ) );
+        txtPatientName.setText( String.valueOf( REC.getName() ) );
+        txtPatientAge.setText( String.valueOf( REC.getAge() ) );
+//        txtPatientStatus.setText( String.valueOf( REC.getStatus() ) );
+        txtPatientDuration.setText( String.valueOf( REC.getDuration() ) );
+        txtPatientOutput.setText( REC.toString() );
+    }
+    
+    @FXML
+    private void idSubmit(){
+        String s = txtPatientId.getText();
+        int i = Integer.valueOf(s);
+        REC.setId( i ); // int
+        populateFields();
+    }
+    
+    @FXML
+    private void idDuration(){
+        String s = txtPatientDuration.getText();
+        int i = Integer.valueOf(s);
+        REC.setDuration( i ); // int
+        populateFields();
     }
     
     private void drawGrid() {

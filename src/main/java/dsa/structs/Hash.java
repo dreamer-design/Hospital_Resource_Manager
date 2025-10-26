@@ -8,6 +8,7 @@ import dsa.data.Patient;
 public class Hash {
 //    DSALinkedList<String>[] hashArray;
     Patient[] hashArray; // hashArray stores the key, values 
+    Patient[] sortedArray;
     
     /**
     * Hash Constructor
@@ -15,6 +16,12 @@ public class Hash {
     **/
     public Hash(int length) {
         hashArray = new Patient[ findNextPrime(length) ];
+        sortedArray = new Patient[ findNextPrime(length) ];
+        
+    }
+
+    public Patient[] getSortedArray() {
+        return sortedArray;
     }
 
     /**
@@ -23,6 +30,16 @@ public class Hash {
      */
     public Patient[] getHashArray() {
         return hashArray;
+    }
+    
+    public void rehash() {
+        Patient[] oldArray = hashArray;             // backup array
+        hashArray = new Patient[oldArray.length*2]; // clear the array
+        
+        // put all the items back hashed
+        for(int i=0; i < oldArray.length; i++) {
+            if(hashArray[i] != null) put(hashArray[i]);
+        }
     }
     
     /**
