@@ -124,8 +124,10 @@ public class Patient implements Comparable<Patient> {
     public int compareTo(Patient other) {
         if (other == null) throw new NullPointerException("compare with null");
 
-        if( urgency.ordinal() < other.urgency.ordinal() ) return -1;
-        else if( urgency.ordinal() > other.urgency.ordinal() ) return 1;
+//        if( urgency.ordinal() < other.urgency.ordinal() ) return -1;
+//        else if( urgency.ordinal() > other.urgency.ordinal() ) return 1;
+        if( duration < other.duration ) return -1;
+        else if( duration > other.duration ) return 1;
         else
             return 0;
     }

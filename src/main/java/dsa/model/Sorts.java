@@ -128,11 +128,16 @@ public class Sorts
     } //doPartitioning
     
     // helpers
-    public static void createSorted( Patient[] A) {
-        Patient[] sortedArray = A.clone();
-        int length = compactNonNull( sortedArray );
-        mergeSort( sortedArray, length );
+    /**
+     * 
+     * @param A 
+     */
+    public static Patient[] createSorted( Patient[] A) {
+        Patient[] B = A.clone();
+        int length = compactNonNull( B );
+        mergeSort( B, length );
 //        quickSort( sortedArray, length );
+        return B;
     }
     
     public static int compactNonNull(Patient[] arr) {

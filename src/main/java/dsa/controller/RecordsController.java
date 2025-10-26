@@ -12,10 +12,13 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class RecordsController {
     
@@ -60,13 +63,49 @@ public class RecordsController {
     
     @FXML
     private void sortRecords() throws IOException {
-        Patient[] ref = DataModel.getHashInstance().getHashArray();
-        System.out.println(ref);
-        Sorts.createSorted(ref);
+        Patient[] A = DataModel.getHashInstance().getHashArray();
+        Patient[] B = DataModel.getHashInstance().getSortedArray();
+//        System.out.println(ref);
+        B = Sorts.createSorted(A); // copy the hash array into the sorted array
+        System.out.println(B.length);
 
         // refresh table
-        initialize();
-    }
+//        initialize();
+        // create new window
+        Stage newWindow = new Stage();
+        newWindow.setTitle("Sorted Patient Records");
+
+        TableView<Patient> tableView = new TableView<>();
+        TableColumn<Patient, Integer> durationCol = new TableColumn<>("Duration");
+        durationCol.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        TableColumn<Patient, String> idCol = new TableColumn<>("ID");
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        TableColumn<Patient, String> firstNameCol = new TableColumn<>("Name");
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        TableColumn<Patient, Integer> ageCol = new TableColumn<>("Age");
+        ageCol.setCellValueFactory(new PropertyValueFactory<>("age"));
+        TableColumn<Patient, Integer> urgencyCol = new TableColumn<>("Urgency");
+        urgencyCol.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+
+        // Add all columns to the TableView
+        tableView.getColumns().addAll(durationCol, urgencyCol, idCol, firstNameCol, ageCol);
+
+        // 4. Populate the TableView with your sorted Patient data
+        ObservableList<Patient> sortedPatients = FXCollections.observableArrayList(B);
+        tableView.setItems(sortedPatients);
+
+        // 5. Create a layout for the new window. VBox is simple for a single TableView.
+        VBox root = new VBox(tableView);
+        root.setPrefSize(600, 1000); // Set a preferred size for the content of the window
+        tableView.setPrefSize(600, 1000); // Let the table fill the VBox
+
+        // 6. Create a Scene and set it on the new Stage
+        Scene scene = new Scene(root);
+        newWindow.setScene(scene);
+
+        // 7. Show the new window
+        newWindow.show();
+        }
 
     @FXML
     private void switchToPrimary() throws IOException {

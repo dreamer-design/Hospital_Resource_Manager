@@ -20,6 +20,10 @@ public class Hash {
         
     }
 
+    public Patient[] getSortedArray() {
+        return sortedArray;
+    }
+
     /**
      * get Internal Hash Array
      * @return Patient[] Array
