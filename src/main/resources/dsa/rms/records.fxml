@@ -21,13 +21,13 @@
           <TableColumn fx:id="colName" minWidth="50.0" prefWidth="150.0" text="Name" />
             <TableColumn fx:id="colAge" minWidth="50.0" prefWidth="150.0" text="Age" />
             <TableColumn fx:id="colStatus" minWidth="50.0" prefWidth="150.0" text="Status" />
-            <TableColumn fx:id="Urgency" minWidth="50.0" prefWidth="150.0" text="Urgency" />
-            <TableColumn fx:id="colDepartment" minWidth="50.0" prefWidth="150.0" text="Department" />
+            <TableColumn fx:id="colUrgency" minWidth="50.0" prefWidth="150.0" text="Urgency" />
+            <TableColumn fx:id="colDuration" minWidth="50.0" prefWidth="150.0" text="Duration" />
         </columns>
       </TableView>
       <ButtonBar centerShape="false" prefHeight="40.0" prefWidth="973.0">
         <buttons>
-          <Button mnemonicParsing="false" text="Sort" />
+          <Button fx:id="sortButton" mnemonicParsing="false" onAction="#sortRecords" text="Sort" />
             <Button fx:id="selectRecord" layoutX="645.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#onSelectButtonClicked" text="Select" />
               <Button fx:id="secondaryButton" onAction="#switchToPrimary" text="Switch to Primary View" />
         </buttons>

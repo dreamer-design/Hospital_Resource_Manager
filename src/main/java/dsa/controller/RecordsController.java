@@ -2,6 +2,7 @@ package dsa.controller;
 
 import dsa.data.Patient;
 import dsa.model.DataModel;
+import dsa.model.Sorts;
 import dsa.rms.App;
 import dsa.structs.Hash;
 import java.io.IOException;
@@ -28,27 +29,43 @@ public class RecordsController {
     private TableColumn<Patient, Integer> colAge;
     @FXML
     private TableColumn<Patient, Boolean> colStatus;
+    @FXML
+    private TableColumn<Patient, Enum> colUrgency;
+    @FXML
+    private TableColumn<Patient, Integer> colDuration;
     
-        @FXML
+    @FXML
     private void initialize() {
-        
+        // get records
         Hash h = DataModel.getHashInstance();
         var l = h.getHashArray();
         
         List<Patient> li = Arrays.asList( l ); // its not cheating i need it Iterator/gui
-        
         ObservableList<Patient> data = FXCollections.observableArrayList();
         Iterator<Patient> iter = li.iterator();
         while (iter.hasNext()) {
             data.add(iter.next());
         } // data = List of Deparments for FXML
         
-        // should call getId and getName from Dperatments
+        // should call getters
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colAge.setCellValueFactory(new PropertyValueFactory<>("age"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colUrgency.setCellValueFactory(new PropertyValueFactory<>("urgency"));
+        colDuration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         
         RecordTable.setItems(data);
+    }
+    
+    @FXML
+    private void sortRecords() throws IOException {
+        Patient[] ref = DataModel.getHashInstance().getHashArray();
+        System.out.println(ref);
+        Sorts.createSorted(ref);
+
+        // refresh table
+        initialize();
     }
 
     @FXML
@@ -59,9 +76,18 @@ public class RecordsController {
     @FXML
     private void onSelectButtonClicked(MouseEvent event) throws IOException {
         Patient selected = RecordTable.getSelectionModel().getSelectedItem();
+        System.out.println(selected);
+        System.out.println(DataModel.getPatientId());
+//        System.out.println(DataModel.getPatientId());
         if (selected != null) {
             DataModel.setPatientId( selected.getId() );
         }
+        else
+        {
+            DataModel.setPatientId(1);
+        }
+              
+
         switchToPrimary();
     }
 }

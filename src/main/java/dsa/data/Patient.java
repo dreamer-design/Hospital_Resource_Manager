@@ -35,7 +35,7 @@ public class Patient implements Comparable<Patient> {
         this.urgency = Urgency.values()[ DataModel.RNG.nextInt(5) ];
         destId = -1;  // unassignd. department list might not be created yet
         eta = -1;
-        duration = 0;
+        duration = count;
 //        System.out.println("patient: " + this.id);
     }
 

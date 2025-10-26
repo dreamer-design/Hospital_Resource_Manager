@@ -7,7 +7,7 @@ public class DataModel {
     private static Graph graphInstance;
     private static Hash hashInstance;
     private static Heap schedule;
-    private static int patientId;
+    private static int patientId = 1;
     public static final Random RNG = new Random(); // single source RNG obj for ease
     public static final int GRID_SIZE = 32;
 
@@ -17,6 +17,7 @@ public class DataModel {
         init();
     }
 
+    // dont know why im bothering with getters on these but cbf refactoring so late
     public static Graph getGraphInstance() {
         return graphInstance;
     }
