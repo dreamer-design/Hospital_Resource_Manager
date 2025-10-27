@@ -23,6 +23,7 @@
          </children></Pane>
       <ButtonBar prefHeight="40.0" prefWidth="200.0">
         <buttons>
+            <Button fx:id="removeButton" layoutX="668.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#onRemovedButtonClicked" text="Remove" />
           <Button fx:id="seletctHigh" mnemonicParsing="false" onMouseClicked="#onSelectButtonClicked" text="Select" />
               <Button fx:id="secondaryButton" onAction="#switchToPrimary" text="Switch to Primary View" />
         </buttons>
