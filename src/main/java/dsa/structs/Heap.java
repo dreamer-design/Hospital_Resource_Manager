@@ -1,7 +1,6 @@
 package dsa.structs;
 import dsa.data.Patient;
 import dsa.data.Request;
-import dsa.model.DataModel;
 
 //todo: 1. check logging
 
@@ -25,12 +24,8 @@ public class Heap {
      * higher priority.
      * @param record
      */
-    public void add(Patient record) {
-        int rs = DataModel.sampleDepartmentID();
-        int rd = DataModel.sampleDepartmentID();
-
-        int p = record.init(rs, rd);
-        Request newRequest = new Request(p, record);
+    public void add(Patient record, int priority) {
+        Request newRequest = new Request(record, priority);
 
         heap[++count] = newRequest; // start at index 1 for clarity
         trickleUp(count);
@@ -131,11 +126,6 @@ public class Heap {
         }
         count = oldCount;
     }
-
-    
-    public void display() {
-        
-    }
     
     @Override
     public String toString() {
@@ -151,15 +141,20 @@ public class Heap {
         return builder.toString();
     }
     
-    private void logState(String action, Request req) {
-        System.out.println("\n" + action + ": " + req.getValue().getName()
+    /**
+     * log function for heap ops
+     * @param action
+     * @param req 
+     * xxx: logState
+     */
+    public void logState(String action, Request req) {
+        System.out.print("\nlog{ ");
+        System.out.print(action + ": " + req.getValue().getName()
                 + " priority=" + req.getPriority());
-        System.out.println("start log entry:");
         for (int i = 1; i <= count; i++)
             System.out.print(i + ": " + heap[i].getPriority() + " (" + heap[i].getValue().getName() + "), ");
-        System.out.println("end log entry");
+        System.out.println("} end log");
     }
-
 
     public static void main(String[] args) {
 //        Patient t = new Patient("joe");
@@ -173,23 +168,22 @@ public class Heap {
 //        h.add(t); h.add(u); h.add(v);
 //        System.out.println(h);
         
-        // test
-        int s = 20;
+        // xxx: test heap insert/exctract
+        int s = 10;
         
         Heap h = new Heap(s);
 //        System.out.println(h);
 
         for (int i = 1; i < s; i++) {
             Patient p = new Patient("P" + i);
-            h.add(p);
+//            h.add(p);
         }
 
-        
         System.out.println("\nTop of heap: " + h.peek().getValue().getName()); //xxx: top of heap
 
-//        for (int i = 0; i < s/2; i++) {
-//            Request r = h.remove();
-//            System.out.println("Extracted: " + r.getValue().getName() + " (priority=" + r.getPriority() + ")");
-//        }
+        for (int i = 0; i < 3; i++) {
+            Request r = h.remove();
+            System.out.println("Extracted: " + r.getValue().getName() + " (priority=" + r.getPriority() + ")");
+        }
     }
 }

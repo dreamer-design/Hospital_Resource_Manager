@@ -126,8 +126,12 @@ public class Patient implements Comparable<Patient> {
         return status;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getUrgency() {
-        return urgency.ordinal();
+        return urgency.ordinal(); // note: urgency converted to int when exported
     }
 
     public void setUrgency(Urgency urgency) {
