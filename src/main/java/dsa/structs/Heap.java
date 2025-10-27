@@ -11,8 +11,11 @@ import dsa.data.Request;
 public class Heap {       
     private Request[] heap;
     private int count;
+    public LinkedList<String> backlog; // note: list of request strings
+
     
     public Heap(int size) {
+        this.backlog = new LinkedList();
         this.count = 0;
         heap = new Request[size];
     }
@@ -42,7 +45,6 @@ public class Heap {
         }
         return heap[1];
     }
-
         
     /*
     remove() must return the highest priority element and remove it from the
@@ -131,12 +133,10 @@ public class Heap {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         
-        for(int i = 0; i < heap.length; i++)
-            if( heap[i] != null )
-                builder .append(i).append(" : ")
-                        .append( heap[i].getPriority() ).append(" : ")
-                        .append(heap[i]
-                        );
+        for(String line: backlog) {
+//            System.out.println("line"); // xxx: line, Heap.toString
+            builder.append(line);
+        }
         
         return builder.toString();
     }
@@ -148,14 +148,35 @@ public class Heap {
      * xxx: logState
      */
     public void logState(String action, Request req) {
-        System.out.print("\nlog{ ");
-        System.out.print(action + ": " + req.getValue().getName()
-                + " priority=" + req.getPriority());
-        for (int i = 1; i <= count; i++)
-            System.out.print(i + ": " + heap[i].getPriority() + " (" + heap[i].getValue().getName() + "), ");
-        System.out.println("} end log");
+        // log the requests in a list
+        backlog.insertLast( buildLog(action, req) );
     }
 
+    public String buildLog(String action, Request req) {
+        StringBuilder log = new StringBuilder();
+
+        log.append("\n{ ");
+        log.append(action)
+                .append(": ")
+                .append(req.getValue().getName())
+                .append(" priority=")
+                .append(req.getPriority());
+
+        for (int i = 1; i <= count; i++) {
+            log.append(" ")
+                    .append(i)
+                    .append(": ")
+                    .append(heap[i].getPriority())
+                    .append(" (")
+                    .append(heap[i].getValue().getName())
+                    .append("),");
+        }
+
+        log.append(" }");
+
+        return log.toString();
+    }
+    
     public static void main(String[] args) {
 //        Patient t = new Patient("joe");
 //        t.setUrgency(Patient.Urgency.HIGH);

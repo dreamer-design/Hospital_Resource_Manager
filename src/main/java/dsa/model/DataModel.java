@@ -35,6 +35,12 @@ public class DataModel {
         return hashInstance;
     }
 
+    public static Heap getHeapInstance() {
+        return heapInstance;
+    }
+    
+    
+
     public static Heap getSchedule() {
         return schedule;
     }
@@ -83,6 +89,7 @@ public class DataModel {
             hashInstance.put(newRecord);
             
             if( newRecord.getUrgency() > Patient.Urgency.HIGH.ordinal()  ) {
+                System.out.println("urgent"); // xxx: urgent
                 Request newReq = new Request(newRecord, priority); // urgent: create a request
                 heapInstance.logState("urgent: " + newRecord.getUrgency() , newReq);
                 heapInstance.add(newRecord, priority);
