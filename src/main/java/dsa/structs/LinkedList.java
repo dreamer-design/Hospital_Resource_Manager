@@ -48,6 +48,14 @@ public class LinkedList<E> implements Iterable<E> {
         };
     }
     
+    public int getLength() {
+        int i = 0;
+        for(var x: this) {
+            i++;
+        }
+        return i;
+    }
+    
     public Boolean isEmpty() {
         return head == null;
         

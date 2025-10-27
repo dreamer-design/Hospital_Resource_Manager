@@ -48,11 +48,11 @@ public class Search {
             
         // goto the best next node until you reach the target
         while( !openSet.isEmpty() && openSet.peek() != null) {
-            System.out.println("*");
+//            System.out.println("*");
             
             Department current = openSet.dequeue();
             if (current == dest) {
-                System.out.println( reconPath(dest) ); // reconstruct path output
+//                System.out.println( reconPath(dest) ); // reconstruct path output
                 return current.getG();
             } // found return distance travelled
             current.setVisited(true);
@@ -64,7 +64,7 @@ public class Search {
 
                 float tentativeG = current.getG() + current.getAdjCorridorLength(neighbor); // start -> current -> neighbor
                 
-                System.out.printf("dep: %s, l: %.0f, cg: %.0f, tG: %.0f\n", neighbor.getId(), current.getAdjCorridorLength(neighbor), current.getG(), tentativeG);
+//                System.out.printf("A_Star: dep: %s, l: %.0f, cg: %.0f, tG: %.0f\n", neighbor.getId(), current.getAdjCorridorLength(neighbor), current.getG(), tentativeG);
                 if (tentativeG < neighbor.getG()) {                 // path to neighbor is cheaper than any path before
                     neighbor.setCameFrom(current);                  // for path recon
                     neighbor.setG(tentativeG);                      // UPDATE: best known: travelled + this nodes length
@@ -73,7 +73,7 @@ public class Search {
                 }
             }
             
-        System.out.printf("G: %.0f\n", current.getG() ); // tally
+//        System.out.printf("A_Star: G: %.0f\n", current.getG() ); // tally
         }
         return null; // not found
     }
@@ -146,7 +146,7 @@ public class Search {
                 if( w == dest) return true;
             }
             levels.insertLast(Q); // should be a level
-            System.out.print(Q);
+//            System.out.print(Q); // xxx: bfs working memory
         }
         
         return false;
@@ -240,14 +240,17 @@ public class Search {
 //            System.out.println( d );
 //        }
 
-        if( Search.dfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
-            System.out.println("dfs, yes");
-        else
-            System.out.println("dfs, no");
+        //xxx: toggle dfs bool
+//        if( Search.dfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
+//            System.out.println("dfs, yes");
+//        else
+//            System.out.println("dfs, no");
         
 //        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(6));
         float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(50));
-        System.out.println(r);
+        
+        
+//        System.out.println(r); //xxx: toggle a_star result
         
     }
 }

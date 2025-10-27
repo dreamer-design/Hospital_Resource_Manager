@@ -93,7 +93,7 @@ public class PrimaryController {
         txtPatientId.setText( String.valueOf( REC.getId() ) );
         txtPatientName.setText( String.valueOf( REC.getName() ) );
         txtPatientAge.setText( String.valueOf( REC.getAge() ) );
-//        txtPatientStatus.setText( String.valueOf( REC.getStatus() ) );
+//        txtPatientStatus.setText( String.valueOf( REC.getStatus() ) ); // todo: txtPatientStatus
         txtPatientDuration.setText( String.valueOf( REC.getDuration() ) );
         txtPatientOutput.setText( REC.toString() );
     }

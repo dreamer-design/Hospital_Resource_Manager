@@ -4,13 +4,13 @@ package dsa.data;
  *
  */
     public class Request {
-        private Integer priority; // high record = highet priority
+        private Integer priority; // high record = highest priority
         private Patient record;
         
         public Request() {
         }
 
-        public Request(int priority, Patient record) {
+        public Request(Patient record, int priority) {
             this.priority = priority;
             this.record = record;
         }

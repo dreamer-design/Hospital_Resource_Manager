@@ -15,6 +15,9 @@ public class Graph {
 
     public Graph() {
         departments = new LinkedList<>();
+//        // need at lease 1 dep before adding a patient
+//        departments.insertFirst( new Department(1, "foyer")); 
+//        departments.insertLast( new Department(2, "exit"));
     }
 
     /**

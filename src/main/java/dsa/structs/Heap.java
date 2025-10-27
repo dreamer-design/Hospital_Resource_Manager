@@ -2,6 +2,8 @@ package dsa.structs;
 import dsa.data.Patient;
 import dsa.data.Request;
 
+//todo: 1. check logging
+
 /**
  *  a max heap
  * to do: set and get travel times for status = department?
@@ -9,8 +11,11 @@ import dsa.data.Request;
 public class Heap {       
     private Request[] heap;
     private int count;
+    public LinkedList<String> backlog; // note: list of request strings
+
     
     public Heap(int size) {
+        this.backlog = new LinkedList();
         this.count = 0;
         heap = new Request[size];
     }
@@ -22,21 +27,23 @@ public class Heap {
      * higher priority.
      * @param record
      */
-    public void add(Patient record) {
-        // U = UrgencyLevel (1 = highest priority, 5 = lowest).
-        // urgency 0-4
-        int U = record.getUrgency() + 1; // 1 - 5
-        // T (expected time in mins) provided by scenario or by shortest-path estimates
-        int T = 10; // constant atm
-        
-        // Higher priority values should be treated first (Max Heap recommended).
-        int priority = (6 - U) + 1000 / T;
-//        System.out.println(priority);
-        heap[++count] = (new Request(priority, record));  // edit
-    }
+    public void add(Patient record, int priority) {
+        Request newRequest = new Request(record, priority);
 
-    public void get(Patient key, Patient value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        heap[++count] = newRequest; // start at index 1 for clarity
+        trickleUp(count);
+        logState("After insert", newRequest);
+    }
+    
+    /**
+     * peek at max value
+     * @return root node
+     */
+    public Request peek() {
+        if (count == 0) {
+            return null;
+        }
+        return heap[1];
     }
         
     /*
@@ -45,55 +52,159 @@ public class Heap {
     element at the root and then trickling it down.
     */
     public Request remove() {
-        
-        return null;
+        if (count == 0) {
+            return null;
+        }
+
+        Request root = heap[1];
+        heap[1] = heap[count--];
+        trickleDown(1);
+//        System.out.printf("After remove", root);
+        logState("After remove", root);
+        return root;
     }
     
-    public void display() {
-        
-    }
-    
+    /**
+     * trickle up
+     * @param index
+     * [1] indexing
+     */
     private void trickleUp(int index) {
-        
+        int parent = index / 2;
+        Request bottom = heap[index];
+
+        while (index > 1 && heap[parent].getPriority() < bottom.getPriority()) {
+            heap[index] = heap[parent];
+            index = parent;
+            parent = parent / 2;
+        }
+        heap[index] = bottom;
     }
-    
+
+    /**
+     * trickle down
+     * @param index 
+     * [1] indexing
+     */
     private void trickleDown(int index) {
-        
-    }
-    
-    public void heapSort() {
-        
+        int largerChild;
+        Request top = heap[index];
+
+        while (index * 2 <= count) {
+            int leftChild = index * 2;
+            int rightChild = leftChild + 1;
+
+            if (rightChild <= count && heap[leftChild].getPriority() < heap[rightChild].getPriority()) {
+                largerChild = rightChild;
+            } else {
+                largerChild = leftChild;
+            }
+
+            if (top.getPriority() >= heap[largerChild].getPriority()) {
+                break;
+            }
+
+            heap[index] = heap[largerChild];
+            index = largerChild;
+        }
+        heap[index] = top;
     }
     
     // will convert the array of Request objects into a max heap.
     public void heapify() {
-        
+        for (int i = count / 2; i >= 1; i--) {
+            trickleDown(i);
+        }
+    }
+
+    public void heapSort() {
+        int oldCount = count;
+        for (int i = count; i > 1; i--) {
+            Request temp = heap[1];
+            heap[1] = heap[i];
+            heap[i] = temp;
+            count--;
+            trickleDown(1);
+        }
+        count = oldCount;
     }
     
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         
-        for(int i = 0; i < heap.length; i++)
-            if( heap[i] != null )
-                builder .append(i).append(" : ")
-                        .append( heap[i].getPriority() ).append(" : ")
-                        .append(heap[i]
-                        );
+        for(String line: backlog) {
+//            System.out.println("line"); // xxx: line, Heap.toString
+            builder.append(line);
+        }
         
         return builder.toString();
     }
+    
+    /**
+     * log function for heap ops
+     * @param action
+     * @param req 
+     * xxx: logState
+     */
+    public void logState(String action, Request req) {
+        // log the requests in a list
+        backlog.insertLast( buildLog(action, req) );
+    }
 
+    public String buildLog(String action, Request req) {
+        StringBuilder log = new StringBuilder();
+
+        log.append("\n{ ");
+        log.append(action)
+                .append(": ")
+                .append(req.getValue().getName())
+                .append(" priority=")
+                .append(req.getPriority());
+
+        for (int i = 1; i <= count; i++) {
+            log.append(" ")
+                    .append(i)
+                    .append(": ")
+                    .append(heap[i].getPriority())
+                    .append(" (")
+                    .append(heap[i].getValue().getName())
+                    .append("),");
+        }
+
+        log.append(" }");
+
+        return log.toString();
+    }
+    
     public static void main(String[] args) {
-        Patient t = new Patient("joe");
-        t.setUrgency(Patient.Urgency.HIGH);
-        Patient u = new Patient("john");
-        u.setUrgency(Patient.Urgency.MEDIUM);
-        Patient v = new Patient("jacob");
-        v.setUrgency(Patient.Urgency.WAIT);
+//        Patient t = new Patient("joe");
+//        t.setUrgency(Patient.Urgency.HIGH);
+//        Patient u = new Patient("john");
+//        u.setUrgency(Patient.Urgency.MEDIUM);
+//        Patient v = new Patient("jacob");
+//        v.setUrgency(Patient.Urgency.WAIT);
+//        
+//        Heap h = new Heap(4);
+//        h.add(t); h.add(u); h.add(v);
+//        System.out.println(h);
         
-        Heap h = new Heap(4);
-        h.add(t); h.add(u); h.add(v);
-        System.out.println(h);
+        // xxx: test heap insert/exctract
+        int s = 10;
+        
+        Heap h = new Heap(s);
+//        System.out.println(h);
+
+        for (int i = 1; i < s; i++) {
+            Patient p = new Patient("P" + i);
+//            h.add(p);
+        }
+
+        System.out.println("\nTop of heap: " + h.peek().getValue().getName()); //xxx: top of heap
+
+        for (int i = 0; i < 3; i++) {
+            Request r = h.remove();
+            System.out.println("Extracted: " + r.getValue().getName() + " (priority=" + r.getPriority() + ")");
+        }
     }
 }
