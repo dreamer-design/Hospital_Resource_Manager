@@ -46,7 +46,6 @@ public class Patient implements Comparable<Patient> {
         eta = -1;
         duration = count; // 
         priority = urgency.ordinal() + 1; // unadjusted for duration
-//        System.out.println("patient: " + this.id);
     }
     
     public int init(int src, int dest) {
@@ -67,14 +66,17 @@ public class Patient implements Comparable<Patient> {
         // update duration by ?
         duration += eta;
         // update priority from 
-        this.priority = (6 - U) + 1000 / (int)T;
+        this.priority = (6 - U) + 1000 / ( (int)T + 1) ; //div 0
         
-        // debug
-        System.out.println("id=" + id + 
-                "\nurgency=" + urgency + 
-                "\ntreatment duraton=" + duration + 
-                "\npriority=" + priority + 
-                "\n");
+        // xxx: patient init
+//        System.out.println(
+//                "patient||init" +
+//                "\nid=" + id + 
+//                "\nurgency=" + urgency + 
+//                "\ntreatment duraton=" + duration + 
+//                "\npriority=" + priority + 
+//                "\n");
+        
         return priority;
     }
 

@@ -85,13 +85,13 @@ public class DataModel {
         int r = DataModel.RNG.nextInt( size );
         int[] samples = new int[ size ];
         
-        // get ids, todo: mybe replace wth getArray in deps
+        // get ids, fixme: mybe replace wth getArray in deps
         int i = 0;
         for(Department x: deps) {
             samples[i++] = x.getId();
         }
 
-        System.out.println(samples[r]);
+//        System.out.println(samples[r]); // xxx: samples selected
         return samples[r];
     }
 
