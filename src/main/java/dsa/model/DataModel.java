@@ -1,11 +1,13 @@
 package dsa.model;
+import dsa.data.Department;
 import dsa.structs.*;
 import dsa.data.Patient;
 import java.util.Random;
 
 public class DataModel {
-    private static Graph graphInstance;
-    private static Hash hashInstance;
+    private static final Graph graphInstance;
+    private static final Hash hashInstance;
+    public static final LinkedList<Department> deps;
     private static Heap schedule;
     private static int patientId = 1;
     public static final Random RNG = new Random(); // single source RNG obj for ease
@@ -14,6 +16,7 @@ public class DataModel {
     static {
         graphInstance = new Graph();
         hashInstance = new Hash(40);
+        deps = graphInstance.getDepartments();
         init();
     }
 
@@ -76,9 +79,20 @@ public class DataModel {
         
         patientId = 1; // get the first record
     }
+    
+    public static int sampleDepartmentID() {
+        int size = deps.getLength();
+        int r = DataModel.RNG.nextInt( size );
+        int[] samples = new int[ size ];
+        
+        // get ids, todo: mybe replace wth getArray in deps
+        int i = 0;
+        for(Department x: deps) {
+            samples[i++] = x.getId();
+        }
 
-    public void reset() {
-        graphInstance = new Graph();
+        System.out.println(samples[r]);
+        return samples[r];
     }
 
     public static void setPatientId(int patientId) {

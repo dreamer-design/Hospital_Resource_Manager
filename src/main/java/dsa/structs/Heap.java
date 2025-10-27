@@ -1,6 +1,7 @@
 package dsa.structs;
 import dsa.data.Patient;
 import dsa.data.Request;
+import dsa.model.DataModel;
 
 /**
  *  a max heap
@@ -23,16 +24,13 @@ public class Heap {
      * @param record
      */
     public void add(Patient record) {
-        // U = UrgencyLevel (1 = highest priority, 5 = lowest).
-        // urgency 0-4
-        int U = record.getUrgency() + 1; // 1 - 5
-        // T (expected time in mins) provided by scenario or by shortest-path estimates
-        int T = 10; // constant atm
+        int rs = DataModel.sampleDepartmentID();
+        int rd = DataModel.sampleDepartmentID();
+//        System.out.println(rs);
+//        System.out.println(rd);
         
-        // Higher priority values should be treated first (Max Heap recommended).
-        int priority = (6 - U) + 1000 / T;
-//        System.out.println(priority);
-        heap[++count] = (new Request(priority, record));  // edit
+        int p = record.init(rs, rd);
+        heap[++count] = (new Request(p, record));  // edit
     }
 
     public void get(Patient key, Patient value) {
@@ -85,6 +83,8 @@ public class Heap {
     }
 
     public static void main(String[] args) {
+        
+        
         Patient t = new Patient("joe");
         t.setUrgency(Patient.Urgency.HIGH);
         Patient u = new Patient("john");

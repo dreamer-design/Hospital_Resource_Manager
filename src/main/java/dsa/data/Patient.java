@@ -1,6 +1,7 @@
 package dsa.data;
 
 import dsa.model.DataModel;
+import dsa.model.Search;
 
 /**
  * This class represents a single patient record
@@ -12,9 +13,13 @@ public class Patient implements Comparable<Patient> {
     String name;
     int age;
     Boolean status;
+    
+    // graph/heap related
     Urgency urgency;
-    int destId; // which department they need to go to get treated
+    int src;  // start dep ID
+    int dest; // end dep ID
     int eta;    // eta calculated by travel times
+    int priority;
     int duration;
     
     public enum Urgency {
@@ -31,12 +36,46 @@ public class Patient implements Comparable<Patient> {
         this.name = name;
         this.age = 20 + DataModel.RNG.nextInt(30);
         this.status = true;
+        
 //        this.urgency = Urgency.LOW;
         this.urgency = Urgency.values()[ DataModel.RNG.nextInt(5) ];
-        destId = -1;  // unassignd. department list might not be created yet
+        
+        // graph/heap related
+        src = -1;
+        dest = -1;  // unassignd. department list might not be created yet
         eta = -1;
-        duration = count;
+        duration = count; // 
+        priority = urgency.ordinal() + 1; // unadjusted for duration
 //        System.out.println("patient: " + this.id);
+    }
+    
+    public int init(int src, int dest) {
+        // update source
+        this.src = src;
+        Department s = DataModel.getGraphInstance().getDepartment(src); // ref for clarity
+        // update destination
+        this.dest = dest;
+        Department d = DataModel.getGraphInstance().getDepartment(dest); // ref for clarity
+
+        // update urgency
+        // 1 - 5, U = UrgencyLevel (1 = highest priority, 5 = lowest).
+        int U = getUrgency() + 1;
+        // calculate eta by graph.a_star
+        // T (expected time in mins) provided by scenario or by shortest-path estimates
+        float T = Search.a_star(DataModel.getGraphInstance(), s, d);
+        int eta = (int)T;
+        // update duration by ?
+        duration += eta;
+        // update priority from 
+        this.priority = (6 - U) + 1000 / (int)T;
+        
+        // debug
+        System.out.println("id=" + id + 
+                "\nurgency=" + urgency + 
+                "\ntreatment duraton=" + duration + 
+                "\npriority=" + priority + 
+                "\n");
+        return priority;
     }
 
     /**
@@ -45,7 +84,7 @@ public class Patient implements Comparable<Patient> {
      */
     public void setDestId(int dest) {
         if( DataModel.getGraphInstance().getDepartments() != null && DataModel.getGraphInstance().getDepartment(dest) != null)
-            this.destId = dest;
+            this.dest = dest;
     }
 
     /**
@@ -139,6 +178,7 @@ public class Patient implements Comparable<Patient> {
                 "\nage=" + age + 
                 "\nstatus=" + status + 
                 "\nurgency=" + urgency + 
+                "\nprirority=" + priority + 
                 "\ntreatment duraton=" + duration + 
                 "\n";
     }
