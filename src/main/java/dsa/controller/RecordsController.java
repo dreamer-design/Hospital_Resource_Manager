@@ -63,11 +63,13 @@ public class RecordsController {
     
     @FXML
     private void sortRecords() throws IOException {
+        System.out.println("Records: Sort Records Button: "); // xxx: Records : Sort button
         Patient[] A = DataModel.getHashInstance().getHashArray();
         Patient[] B = DataModel.getHashInstance().getSortedArray();
 //        System.out.println(ref);
         B = Sorts.createSorted(A); // copy the hash array into the sorted array
-        System.out.println(B.length);
+//        System.out.println("Debug: Records: Sort: length"); // xxx: Debug: RecordsController: Sort: length
+//        System.out.println(B.length);
 
         // refresh table
 //        initialize();
@@ -114,18 +116,21 @@ public class RecordsController {
     
     @FXML
     private void onSelectButtonClicked(MouseEvent event) throws IOException {
+        
+        System.out.println("Select Button Clicked: "); // xxx: Button : Records : Select
         Patient selected = RecordTable.getSelectionModel().getSelectedItem();
+        System.out.print("Record selected: "); // xxx: Records : Select : Patient
         System.out.println(selected);
-        System.out.println(DataModel.getPatientId());
-//        System.out.println(DataModel.getPatientId());
         if (selected != null) {
             DataModel.setPatientId( selected.getId() );
         }
         else
         {
-            DataModel.setPatientId(1);
+            DataModel.setPatientId(1); // fixme: BUG : if ID 1 changed in primary
         }
-              
+        
+        System.out.print("Records: getPatientID: "); // xxx: Records: Select: PatientId set (null==1)
+        System.out.println(DataModel.getPatientId());
 
         switchToPrimary();
     }

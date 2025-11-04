@@ -146,7 +146,8 @@ public class Search {
                 if( w == dest) return true;
             }
             levels.insertLast(Q); // should be a level
-//            System.out.print(Q); // xxx: bfs working memory
+//            System.out.println("breadth first search memory: level"); // xxx: Verbose: Search : BFS
+//            System.out.print(Q);
         }
         
         return false;
@@ -240,17 +241,18 @@ public class Search {
 //            System.out.println( d );
 //        }
 
-        //xxx: toggle dfs bool
-//        if( Search.dfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
-//            System.out.println("dfs, yes");
-//        else
-//            System.out.println("dfs, no");
+        //xxx: Test : Search : dfs bool
+        System.out.println("Depth First Search Boolean Rsult: ");
+        if( Search.dfs(t, t.getDepartment(0), t.getDepartment(70)) ) 
+            System.out.println("dfs, yes");
+        else
+            System.out.println("dfs, no");
         
 //        float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(6));
         float r = Search.a_star(t, t.getDepartment(0), t.getDepartment(50));
         
-        
-//        System.out.println(r); //xxx: toggle a_star result
+        System.out.println("A_star Test result: ");
+        System.out.println(r); //xxx: Test : Search: A_star result
         
     }
 }

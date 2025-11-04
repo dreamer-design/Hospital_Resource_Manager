@@ -26,7 +26,7 @@ public class DataModel {
         init();
     }
 
-    // fixme: dont know why im bothering with getters on refs
+    // fixme: getters on refs
     public static Graph getGraphInstance() {
         return graphInstance;
     }
@@ -78,7 +78,7 @@ public class DataModel {
         graphInstance.addCorridor(54, 72, 2);
         graphInstance.addCorridor(54, 74, 2);
         graphInstance.addCorridor(74, 76, 2);
-        // fixme: crash if id does not exist
+        // fixme: BUG : corridor edge does not exist
 
         // ids are incremented
         for (Integer i = 80; i < 100; i++) {
@@ -89,12 +89,12 @@ public class DataModel {
             hashInstance.put(newRecord);
             
             if( newRecord.getUrgency() > Patient.Urgency.HIGH.ordinal()  ) {
-                System.out.println("urgent"); // xxx: urgent
+//                System.out.println("urgent"); // xxx: Init: DataModel : Urgent
                 Request newReq = new Request(newRecord, priority); // urgent: create a request
                 heapInstance.logState("urgent: " + newRecord.getUrgency() , newReq);
                 heapInstance.add(newRecord, priority);
             } // add urgent to heap
-            else System.out.println("not urgent"); // xxx: not urgent
+//            else System.out.println("not urgent"); // xxx: Init: DataModel : not urgent
         }
 //        hashInstance.put( new Patient("beth") );
 //        hashInstance.put( new Patient("nicola") );
@@ -110,13 +110,14 @@ public class DataModel {
         int r = DataModel.RNG.nextInt(size);
         int[] samples = new int[size];
 
-        // get ids, fixme: mybe replace wth getArray in deps
+        // get ids, fixme: getArray in deps
         int i = 0;
         for (Department x : deps) {
             samples[i++] = x.getId();
         }
 
-//        System.out.println(samples[r]); // xxx: samples selected
+//        System.out.println("samples selected: "); // xxx: Test: DataModel: Samples
+//        System.out.println(samples[r]);
         return samples[r];
     }
 

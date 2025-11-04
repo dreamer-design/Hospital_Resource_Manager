@@ -68,7 +68,8 @@ public class Patient implements Comparable<Patient> {
         // update priority from 
         this.priority = (6 - U) + 1000 / ( (int)T + 1) ; //div 0
         
-        // xxx: patient init
+//         xxx: Init : Patient object
+//        System.out.println("Patient Initialisation: ");
 //        System.out.println(
 //                "patient||init" +
 //                "\nid=" + id + 

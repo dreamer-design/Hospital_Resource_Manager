@@ -15,14 +15,7 @@ public class ScheduleController {
 
     @FXML
     private void initialize() {
-        System.out.println("*Sched*"); // xxx: sched init
-
-        // xxx: textarea
-//        System.out.println(DataModel.heapInstance.backlog.toString());
-//        System.out.println("Controller: " + this);
-//        System.out.println("Backlog: " + DataModel.heapInstance.backlog);
-//        System.out.println("txtScheduleOutput = " + txtScheduleOutput);
-
+        System.out.println("*Schedule initialisation: "); // xxx: Init: ScheduleController
         String s = DataModel.heapInstance.backlog.toString();
         txtScheduleOutput.setText( s );
         String h = DataModel.heapInstance.peek().toString();
@@ -36,16 +29,20 @@ public class ScheduleController {
 
     @FXML
     private void onRemovedButtonClicked() throws IOException {
+        System.out.println("Schedule: Remove Button Clicked: Highest Priority Removed"); // xxx: Button : Schedule: Remove
         DataModel.heapInstance.remove();
+        System.out.println("Scehdule: Reinitialising output");
         initialize();
         
     }
 
     @FXML
     private void onSelectButtonClicked(MouseEvent event) throws IOException {
+        System.out.println("Schedule: Select Button Clicked"); // xxx: Button: Schedule : Select
         var record = DataModel.heapInstance.peek().getValue();
         if (record != null) DataModel.setPatientId( record.getId() );
         else DataModel.setPatientId(1);
+        System.out.println("Shedule: Patient Record Selected:");
         switchToPrimary();
     }
 }

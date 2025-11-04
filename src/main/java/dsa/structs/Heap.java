@@ -2,8 +2,6 @@ package dsa.structs;
 import dsa.data.Patient;
 import dsa.data.Request;
 
-//todo: 1. check logging
-
 /**
  *  a max heap
  * to do: set and get travel times for status = department?
@@ -134,7 +132,8 @@ public class Heap {
         StringBuilder builder = new StringBuilder();
         
         for(String line: backlog) {
-//            System.out.println("line"); // xxx: line, Heap.toString
+            System.out.println("Heap toString: Line");
+//            System.out.println("line"); // xxx: Verbose : Heap : toString : line
             builder.append(line);
         }
         
@@ -145,7 +144,7 @@ public class Heap {
      * log function for heap ops
      * @param action
      * @param req 
-     * xxx: logState
+     * xxx: Heap : logState function
      */
     public void logState(String action, Request req) {
         // log the requests in a list
@@ -189,18 +188,19 @@ public class Heap {
 //        h.add(t); h.add(u); h.add(v);
 //        System.out.println(h);
         
-        // xxx: test heap insert/exctract
+        // xxx: Test : Heap : insert/exctract
         int s = 10;
         
         Heap h = new Heap(s);
-//        System.out.println(h);
+        System.out.println("Test heap(10): ");
+        System.out.println(h);
 
         for (int i = 1; i < s; i++) {
             Patient p = new Patient("P" + i);
-//            h.add(p);
+            h.add(p, 1); // patient, priority
         }
 
-        System.out.println("\nTop of heap: " + h.peek().getValue().getName()); //xxx: top of heap
+        System.out.println("\nTop of heap: " + h.peek().getValue().getName()); //xxx: Test : Top of heap
 
         for (int i = 0; i < 3; i++) {
             Request r = h.remove();

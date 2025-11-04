@@ -170,8 +170,6 @@ public class LinkedList<E> implements Iterable<E> {
         return null; // not found
     }
     
-    
-    // todo: prev
     public E removeLast() {
         // empty
         if (head == null) {
